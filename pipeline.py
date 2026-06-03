@@ -11,7 +11,7 @@ def printv(*args, **kwargs):
         return True
     return False
 def grouping_algo(data):
-    from GROUPING.algorithm import algorithm
+    from Scheduling.GROUPING.algorithm import algorithm
     print(co("\n[GROUPING] Grouping Algorithm ... ","green"),end = '')
     res = {}
 
@@ -138,7 +138,7 @@ def alp_tcpn(initial_marking,grouping):
 
 
 def flp_algo(alts,cap):
-    from FLP_ALGO.FLP import task,schedule,_solve
+    from Scheduling.FLP.FLP import task,schedule,_solve
     tasks_list = []
     print(co(f"\n[FLP] Preparing optimal Schedule... ","green"),end = '')
 
