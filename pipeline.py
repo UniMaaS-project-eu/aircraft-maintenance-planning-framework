@@ -123,60 +123,22 @@ def alp_tcpn(initial_marking,grouping):
             alts.append({"wps":r["wps"]})
     printv(alts)
     return alts
-# def reverse_time(times,wps):
-    # printv("Time reversal")
-    # printv(wps)
+
     durations = [x["duration"]for x in wps]
     timestamps_real = [x["timestamp"] for x in wps]
     ends_real = [i+x for i,x in zip(timestamps_real,durations)]
     timezero = max(ends_real)
-    
-    # printv(timezero)
-    # printv(timezero)
 
     rev_times = [timezero-x-d for x,d in zip(times,durations)]
     wps_resc = wps.copy()
-    # printv(wps)
     for idx,proj in enumerate(wps):
         wps_resc[idx]["timestamp"] = rev_times[idx]
-    # timestamps = [timezero-x for x in ends_real]
-    # printv(wps_resc)
+
     return rev_times,wps_resc
 
-# def flp_tcpn(alts,cap):
-#     print(co(f"\nSaving TCPN outputs... ","green"),end = '')
-#     filenames = []
-#     wps = []
-#     for plane in alts:
-#         if len(alts[plane]) > 1:
-#             printv("multiple alts selecting first")
-#         tcpn = alts[plane][0]
-#         tmp=tcpn["wps"].copy()
-        
-#         for i in tmp:
-#             i["planeID"] = plane
-#         wps+=tmp
-#         filename= f"{plane}_tcpn_out.json"
-#         json.dump(tcpn,open(filename,'w'))
-#         filenames.append(filename)
-#     import subprocess
-#     print(co("Done","red"))
-#     print(co(f"\nTCPN for  Fleet... ","green"),end = '')
-
-#     result = subprocess.run(["python","APLOMA/aploma.py","-c",f"{cap}","-ijx", "--paths"]+filenames,capture_output=True, text=True) 
-#     if result.stderr != "":print(result.stderr)
-#     printv(result.stdout)
-#     aploma_out = eval(result.stdout.split(":")[-3].replace("optimal","").replace(" ",""))
-#     printv("fleet level planning result:",aploma_out)
-#     # print(reverse_time(aploma_out,wps))
-#     results = []
-#     for res in aploma_out:
-#         results.append(reverse_time(res,wps))
-#     print(co("Done","red"))
-#     return results
 
 def flp_algo(alts,cap):
-    from APLOMA_ALGO.APLOMA import task,schedule,_solve
+    from FLP_ALGO.FLP import task,schedule,_solve
     tasks_list = []
     print(co(f"\n[FLP] Preparing optimal Schedule... ","green"),end = '')
 
@@ -220,34 +182,6 @@ def list2tasks(l):
 def planeID2PID(planeID):
     return int(planeID.split("_")[-1])
 
-# def tracegen_prep(alts):
-#     input_json = []
-#     printv(alts)
-#     for idx,sched in enumerate(alts):
-       
-
-#         alt = {"ID":f"Alt{idx+1}","Schedule":[]}
-#         for project in sched[-1]:
-#             printv(project)
-#             flag = False
-#             for plane in alt["Schedule"]:
-#                 if planeID2PID(project["planeID"]) == plane["PID"]:
-#                     plane["P"].append(list2tasks(project["tasks"]))
-#                     plane["T"].append(project["timestamp"])
-#                     plane["D"].append(project["duration"])
-#                     flag = True
-#                     break
-#             if not flag:
-#                 alt["Schedule"].append({
-#                     "PID" : planeID2PID(project["planeID"]),
-#                     "P":[list2tasks(project["tasks"])],
-#                     "T":[project["timestamp"]],
-#                     "D":[project["duration"]]   
-
-#                 })
-#                 flag = False
-#         input_json.append(alt)
-#     return input_json
 def tracegen_prepv2(sched_l):
     print(co("\n[TACPN] Preparing schedule for trace generation ...","green"),end = "")
     input_json = []
@@ -327,7 +261,6 @@ if __name__=="__main__":
     import argparse
     parser = argparse.ArgumentParser()
     parser.add_argument('-f','--filename', help='filename of initial data json',required=True)
-    #parser.add_argument('-i','--int', help='this item is an int',type=int)
     parser.add_argument('-v','--verbose', help='increase output verbosity',action='store_true')
     args = parser.parse_args()
     VERBOSE = args.verbose
