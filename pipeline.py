@@ -1,0 +1,336 @@
+try:
+    from termcolor import colored as co
+except:
+    def co(s,col):
+        return s
+import json
+VERBOSE = False
+def printv(*args, **kwargs):
+    if VERBOSE:
+        print(*args, **kwargs)
+        return True
+    return False
+def grouping_algo(data):
+    from GROUPING.algorithm import algorithm
+    print(co("\n[GROUPING] Grouping Algorithm ... ","green"),end = '')
+    res = {}
+
+    printv("\nCalculating Groupings ....")
+    for idx,plane in enumerate(data["fleet"]):
+        printv(f"{idx+1}/{len(data['fleet'])}")
+
+        a = [t["max_util"]-t["curr_util"] for t in plane["events"]]
+        la = [t["taskID"] for t in plane["events"]]
+        ld = [t["duration"]for t in plane["events"]]
+        w = [t["importance"] for t in plane["events"]]
+        x,imp,labels,durations = a,w,la,ld #TODO
+        if len(x) == 0 :
+            print("skip")
+            continue
+        x_sorted,imp_sorted,labels_sorted,durations_sorted = map(list, zip(*sorted(zip(x,imp,labels,durations))))
+
+        minx = x_sorted[0]
+        important_x = [i for i,j,l in zip(x_sorted,imp_sorted,labels_sorted) if (j>=data["threshold"] or i==minx)]
+        important_l = [l for i,j,l in zip(x_sorted,imp_sorted,labels_sorted) if (j>=data["threshold"] or i==minx)]
+        # print(len(important_x))
+        if len(important_x) == 0:
+            print("Boom not important")
+            continue
+        x,cost,labeledout =  algorithm(important_x,x_sorted,data["max_projects"],imp_sorted,important_l,labels_sorted,v=VERBOSE) 
+
+
+
+        res[plane["aircraftID"]] = {"split":x,"cost":cost,"labeledout":labeledout}
+    printv(f'grouping algo result : \n{json.dumps(res, indent=4)}')
+    print(co("Done","red"))
+    return res
+
+def tokenise(ac,tasks,fcpd=1,fhpd=1,years=1,year_dur=365,p=2,bop=[],bot=[]):
+    res  = {}
+    res["active_fleet"]= {
+        "tokens": [[]],
+        "timestamps": [0]
+    }
+    res["specs"]= {
+        "tokens": [],
+        "timestamps": [0]
+    }
+    spec_1 = []
+    spec_2 = []
+    for task in tasks:
+        try:
+            if task["max_util"]-task["curr_util"] >= 0:
+                res["active_fleet"]["tokens"][0].append([task["taskID"],int(task["curr_util"]),int(task["curr_util"]),int(task["curr_util"])])#replace with other clocks when we have good fhpd fcpd needed
+                #TODO:modify to take into account both interval_value AND interval_value_next
+                spec_1.append([task["taskID"],int(task["max_util"]),int(task["max_util"]),int(task["max_util"])])#replace with other clocks when we have good fhpd fcpd needed
+                spec_2.append(task["duration"])#replace with other clocks when we have good fhpd fcpd needed
+                
+
+        except KeyError:
+            pass
+    res["specs"]["tokens"]=[[spec_1,spec_2]]
+    flights_tokens = []
+    flights_timestamps = []
+    for day in range(year_dur*years):
+        flights_tokens.append([f"#{day}",fcpd,fhpd])
+        flights_timestamps.append(day)
+    res["flights"]={
+        "tokens":flights_tokens,    
+        "timestamps":flights_timestamps
+    }
+    wps = []
+    wps_t = []
+    for year in range(years):
+        wps.append([f"#{year}",p])
+        wps_t.append(year_dur*year)
+    res["workgroup"] = {
+        "tokens" : wps,
+        "timestamps" : wps_t
+    }
+    res["blackout_periods"]= {
+        "tokens": [(f"#{idx}",i) for idx,i in enumerate(bop)],
+        "timestamps": bot
+    }
+    return res
+# def alp_tcpn_prep(data,fleet_grouping):
+#     for plane in data:
+def initial_marking(data):
+    print(co("\n[ALP] Initial Markings generation ... ","green"),end = '')
+    res = {}
+    printv("\nCalculating Groupings ....")
+    for idx,plane in enumerate(data["fleet"]):
+        printv(f"{idx+1}/{len(data['fleet'])}")
+
+        res[plane["aircraftID"]] = tokenise(plane["aircraftID"],plane["events"],fcpd=plane["fpd"],year_dur=data["sim_days"],p=data["max_projects"],bot=data["blackout-days"],bop=[1 for _ in data["blackout-days"]])
+    printv(f'Initial Markings : \n{json.dumps(res, indent=4)}')
+    print(co("Done","red"))
+    return res
+def alp_tcpn(initial_marking,grouping):
+
+    import subprocess
+    pID = ""
+    json.dump(initial_marking,open(f"dataset_initial_marking.json",'w'))
+    json.dump(grouping,open(f"curr_grouping.json",'w'))
+
+    result = subprocess.run(["python", "Modified/vp1_custom_grouping.py","pipeline","-ijx"],capture_output=True, text=True) 
+        
+    printv(result.stderr)
+    # strr = result.stdout.replace("status",'"status"').replace('wps','"wps"').replace("'",'"').replace(",\n }","\n   }").replace(",\n     ]","\n     ]").replace(",\n]","\n]")
+    tcpnresult=json.loads(result.stdout)
+    alts = []
+    for r in tcpnresult:
+        if r["status"]=="SAFE":
+            alts.append({"wps":r["wps"]})
+    printv(alts)
+    return alts
+# def reverse_time(times,wps):
+    # printv("Time reversal")
+    # printv(wps)
+    durations = [x["duration"]for x in wps]
+    timestamps_real = [x["timestamp"] for x in wps]
+    ends_real = [i+x for i,x in zip(timestamps_real,durations)]
+    timezero = max(ends_real)
+    
+    # printv(timezero)
+    # printv(timezero)
+
+    rev_times = [timezero-x-d for x,d in zip(times,durations)]
+    wps_resc = wps.copy()
+    # printv(wps)
+    for idx,proj in enumerate(wps):
+        wps_resc[idx]["timestamp"] = rev_times[idx]
+    # timestamps = [timezero-x for x in ends_real]
+    # printv(wps_resc)
+    return rev_times,wps_resc
+
+# def flp_tcpn(alts,cap):
+#     print(co(f"\nSaving TCPN outputs... ","green"),end = '')
+#     filenames = []
+#     wps = []
+#     for plane in alts:
+#         if len(alts[plane]) > 1:
+#             printv("multiple alts selecting first")
+#         tcpn = alts[plane][0]
+#         tmp=tcpn["wps"].copy()
+        
+#         for i in tmp:
+#             i["planeID"] = plane
+#         wps+=tmp
+#         filename= f"{plane}_tcpn_out.json"
+#         json.dump(tcpn,open(filename,'w'))
+#         filenames.append(filename)
+#     import subprocess
+#     print(co("Done","red"))
+#     print(co(f"\nTCPN for  Fleet... ","green"),end = '')
+
+#     result = subprocess.run(["python","APLOMA/aploma.py","-c",f"{cap}","-ijx", "--paths"]+filenames,capture_output=True, text=True) 
+#     if result.stderr != "":print(result.stderr)
+#     printv(result.stdout)
+#     aploma_out = eval(result.stdout.split(":")[-3].replace("optimal","").replace(" ",""))
+#     printv("fleet level planning result:",aploma_out)
+#     # print(reverse_time(aploma_out,wps))
+#     results = []
+#     for res in aploma_out:
+#         results.append(reverse_time(res,wps))
+#     print(co("Done","red"))
+#     return results
+
+def flp_algo(alts,cap):
+    from APLOMA_ALGO.APLOMA import task,schedule,_solve
+    tasks_list = []
+    print(co(f"\n[FLP] Preparing optimal Schedule... ","green"),end = '')
+
+    for plane in alts:
+        if len(alts[plane]) > 1:
+            printv("multiple alts selecting first")
+        tcpn = alts[plane][0]
+        tmp=tcpn["wps"].copy()
+
+        for i in tmp:
+            tasks_list.append((plane,i))
+    tasks = []
+    timezero = 0
+    for _,i in tasks_list:
+            if i['duration'] + i['timestamp'] > timezero :
+                timezero =  i['duration'] + i['timestamp']    
+    for plane,i in tasks_list:
+            tasks.append(task(f"{plane}: {i['tasks']}",timezero-(i['timestamp']+i['duration']),i['duration']))
+    schd = schedule(tasks,timezero=timezero)
+
+
+    printv("\n  Initial schedule (reverse time)")
+    if printv():schd.print()
+    print(co("Done","red"))
+
+    print(co(f"\n[FLP] Running Fleet Level Planning Algorithm... ","green"),end = '')
+
+    _solve(schd,0,cap)
+    printv("\n  Resulting schedule (reverse time)")
+    if printv():schd.print()
+    print(co("Done","red"))
+    return [schd]
+
+
+def list2tasks(l):
+    res = []
+    for idx,i in enumerate(l):
+        if i ==1:
+            res.append(f"t{idx+1}")
+    return res
+def planeID2PID(planeID):
+    return int(planeID.split("_")[-1])
+
+# def tracegen_prep(alts):
+#     input_json = []
+#     printv(alts)
+#     for idx,sched in enumerate(alts):
+       
+
+#         alt = {"ID":f"Alt{idx+1}","Schedule":[]}
+#         for project in sched[-1]:
+#             printv(project)
+#             flag = False
+#             for plane in alt["Schedule"]:
+#                 if planeID2PID(project["planeID"]) == plane["PID"]:
+#                     plane["P"].append(list2tasks(project["tasks"]))
+#                     plane["T"].append(project["timestamp"])
+#                     plane["D"].append(project["duration"])
+#                     flag = True
+#                     break
+#             if not flag:
+#                 alt["Schedule"].append({
+#                     "PID" : planeID2PID(project["planeID"]),
+#                     "P":[list2tasks(project["tasks"])],
+#                     "T":[project["timestamp"]],
+#                     "D":[project["duration"]]   
+
+#                 })
+#                 flag = False
+#         input_json.append(alt)
+#     return input_json
+def tracegen_prepv2(sched_l):
+    print(co("\n[TACPN] Preparing schedule for trace generation ...","green"),end = "")
+    input_json = []
+    for idx,sched in enumerate(sched_l):
+        alt = {"ID":f"Alt{idx+1}","Schedule":[]}
+        timezero = sched.timezero
+        for project in sched.tasks:
+            flag = False
+            planeid = project.id.split(': ')[0]
+            projects = eval(project.id.split(': ')[1])
+            duration = project.d
+            date = timezero - project.i - project.d
+            for plane in alt["Schedule"]:
+                if planeID2PID(planeid) == plane["PID"]:
+                    plane["P"].append(list2tasks(projects))
+                    plane["T"].append(date)
+                    plane["D"].append(duration)
+                    flag = True
+                    break
+            if not flag:
+                alt["Schedule"].append({
+                    "PID" : planeID2PID(planeid),
+                    "P":[list2tasks(projects)],
+                    "T":[date],
+                    "D":[duration]   
+
+                })
+        input_json.append(alt)
+    printv("\n schedule json:")
+    printv(input_json)
+    print(co("Done","red"))
+    return input_json   
+def tracegen_run(input_json,T_horizon_nominal,T_dc):
+    print(co(f"\n[TACPN] Generation TACPN traces... ","green"),end = '')
+
+    from TACPN.Trace_generator.trace_gen_zerotimes import DictObject, HandleAlt
+    alts = [DictObject(**alt) for alt in input_json]
+    for alt in alts:
+        printv(f"\n     generating trace for {alt.ID}...",end = '')
+        trace = HandleAlt(alt,T_dc,T_horizon_nominal,save=False)
+        with open(f'{alt.ID}.trc','w') as f:
+            f.write(trace)
+        printv("Done")
+    print(co("Done","red"))
+
+def read_input(filename):
+    print(co("[Misc] Parsing Data ... ","blue"),end = '')
+    data = json.load(open(filename,'r'))
+    printv(f"Parsed {filename} : \n {json.dumps(data, indent=4)}")
+    print(co("Done","red"))
+    return data
+
+
+def main(filename):
+    data = read_input(args.filename)
+    groupings = grouping_algo(data)
+    initial_markings = initial_marking(data)
+    fleet_alt_tcpn_res = {}
+    for idx,plane in enumerate(data["fleet"]):
+        pID = plane["aircraftID"]
+        print(co(f"\n[ALP] TCPN for {pID} ({idx}/{len(data['fleet'])}) ... ","green"),end = '')
+        fleet_alt_tcpn_res[pID]=alp_tcpn(initial_markings[pID],groupings[pID]["labeledout"])
+        print(co("Done","red"))
+    flp_res = flp_algo(fleet_alt_tcpn_res,data["hangar_capacity"])
+    if printv("Resulting Schedule (correct time)"):
+        flp_rev_res = flp_res.copy()
+        for alt in flp_rev_res:
+            for t in alt.tasks:
+                t.i = alt.timezero - t.i -t.d
+            alt.print()
+    sched_out = tracegen_prepv2(flp_res)
+    json.dump(sched_out,open("scheduling_output.json",'w'))
+    tracegen_run(sched_out,T_horizon_nominal=data["sim_days"],T_dc=100)
+    
+        # print(f'{json.dumps(fleet_alt_tcpn_res, indent=4)}')
+if __name__=="__main__":
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-f','--filename', help='filename of initial data json',required=True)
+    #parser.add_argument('-i','--int', help='this item is an int',type=int)
+    parser.add_argument('-v','--verbose', help='increase output verbosity',action='store_true')
+    args = parser.parse_args()
+    VERBOSE = args.verbose
+    main(args.filename)
+
+

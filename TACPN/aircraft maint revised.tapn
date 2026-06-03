@@ -1,0 +1,2253 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<pnml xmlns="http://www.informatik.hu-berlin.de/top/pnml/ptNetb">
+  <declaration>
+    <structure>
+      <declarations>
+        <namedsort id="dot" name="dot">
+          <dot/>
+        </namedsort>
+        <namedsort id="aircraft" name="aircraft">
+          <cyclicenumeration>
+            <feconstant id="A1" name="aircraft"/>
+            <feconstant id="A2" name="aircraft"/>
+            <feconstant id="A3" name="aircraft"/>
+            <feconstant id="A4" name="aircraft"/>
+            <feconstant id="A5" name="aircraft"/>
+          </cyclicenumeration>
+        </namedsort>
+        <variabledecl id="air" name="air">
+          <usersort declaration="aircraft"/>
+        </variabledecl>
+      </declarations>
+    </structure>
+  </declaration>
+  <shared-place initialMarking="5" invariant="&lt; inf" name="P_timer_1">
+    <colorinvariant>
+      <inscription inscription="&lt;= 7"/>
+      <colortype name="aircraft">
+        <color value="A1"/>
+      </colortype>
+    </colorinvariant>
+    <colorinvariant>
+      <inscription inscription="&lt;= 7"/>
+      <colortype name="aircraft">
+        <color value="A2"/>
+      </colortype>
+    </colorinvariant>
+    <colorinvariant>
+      <inscription inscription="&lt;= 7"/>
+      <colortype name="aircraft">
+        <color value="A3"/>
+      </colortype>
+    </colorinvariant>
+    <colorinvariant>
+      <inscription inscription="&lt;= 7"/>
+      <colortype name="aircraft">
+        <color value="A4"/>
+      </colortype>
+    </colorinvariant>
+    <colorinvariant>
+      <inscription inscription="&lt;= 7"/>
+      <colortype name="aircraft">
+        <color value="A5"/>
+      </colortype>
+    </colorinvariant>
+    <type>
+      <text>aircraft</text>
+      <structure>
+        <usersort declaration="aircraft"/>
+      </structure>
+    </type>
+    <hlinitialMarking>
+      <text>1'aircraft.all</text>
+      <structure>
+        <add>
+          <subterm>
+            <numberof>
+              <subterm>
+                <numberconstant value="1">
+                  <positive/>
+                </numberconstant>
+              </subterm>
+              <subterm>
+                <all>
+                  <usersort declaration="aircraft"/>
+                </all>
+              </subterm>
+            </numberof>
+          </subterm>
+        </add>
+      </structure>
+    </hlinitialMarking>
+  </shared-place>
+  <shared-place initialMarking="5" invariant="&lt; inf" name="P_timer_2">
+    <colorinvariant>
+      <inscription inscription="&lt;= 18"/>
+      <colortype name="aircraft">
+        <color value="A1"/>
+      </colortype>
+    </colorinvariant>
+    <colorinvariant>
+      <inscription inscription="&lt;= 18"/>
+      <colortype name="aircraft">
+        <color value="A2"/>
+      </colortype>
+    </colorinvariant>
+    <colorinvariant>
+      <inscription inscription="&lt;= 18"/>
+      <colortype name="aircraft">
+        <color value="A3"/>
+      </colortype>
+    </colorinvariant>
+    <colorinvariant>
+      <inscription inscription="&lt;= 18"/>
+      <colortype name="aircraft">
+        <color value="A4"/>
+      </colortype>
+    </colorinvariant>
+    <colorinvariant>
+      <inscription inscription="&lt;= 18"/>
+      <colortype name="aircraft">
+        <color value="A5"/>
+      </colortype>
+    </colorinvariant>
+    <type>
+      <text>aircraft</text>
+      <structure>
+        <usersort declaration="aircraft"/>
+      </structure>
+    </type>
+    <hlinitialMarking>
+      <text>1'aircraft.all</text>
+      <structure>
+        <add>
+          <subterm>
+            <numberof>
+              <subterm>
+                <numberconstant value="1">
+                  <positive/>
+                </numberconstant>
+              </subterm>
+              <subterm>
+                <all>
+                  <usersort declaration="aircraft"/>
+                </all>
+              </subterm>
+            </numberof>
+          </subterm>
+        </add>
+      </structure>
+    </hlinitialMarking>
+  </shared-place>
+  <shared-place initialMarking="5" invariant="&lt; inf" name="P_timer_3">
+    <colorinvariant>
+      <inscription inscription="&lt;= 35"/>
+      <colortype name="aircraft">
+        <color value="A1"/>
+      </colortype>
+    </colorinvariant>
+    <colorinvariant>
+      <inscription inscription="&lt;= 35"/>
+      <colortype name="aircraft">
+        <color value="A2"/>
+      </colortype>
+    </colorinvariant>
+    <colorinvariant>
+      <inscription inscription="&lt;= 35"/>
+      <colortype name="aircraft">
+        <color value="A3"/>
+      </colortype>
+    </colorinvariant>
+    <colorinvariant>
+      <inscription inscription="&lt;= 35"/>
+      <colortype name="aircraft">
+        <color value="A4"/>
+      </colortype>
+    </colorinvariant>
+    <colorinvariant>
+      <inscription inscription="&lt;= 35"/>
+      <colortype name="aircraft">
+        <color value="A5"/>
+      </colortype>
+    </colorinvariant>
+    <type>
+      <text>aircraft</text>
+      <structure>
+        <usersort declaration="aircraft"/>
+      </structure>
+    </type>
+    <hlinitialMarking>
+      <text>1'aircraft.all</text>
+      <structure>
+        <add>
+          <subterm>
+            <numberof>
+              <subterm>
+                <numberconstant value="1">
+                  <positive/>
+                </numberconstant>
+              </subterm>
+              <subterm>
+                <all>
+                  <usersort declaration="aircraft"/>
+                </all>
+              </subterm>
+            </numberof>
+          </subterm>
+        </add>
+      </structure>
+    </hlinitialMarking>
+  </shared-place>
+  <shared-place initialMarking="5" invariant="&lt; inf" name="P_timer_4">
+    <colorinvariant>
+      <inscription inscription="&lt;= 60"/>
+      <colortype name="aircraft">
+        <color value="A1"/>
+      </colortype>
+    </colorinvariant>
+    <colorinvariant>
+      <inscription inscription="&lt;= 60"/>
+      <colortype name="aircraft">
+        <color value="A2"/>
+      </colortype>
+    </colorinvariant>
+    <colorinvariant>
+      <inscription inscription="&lt;= 60"/>
+      <colortype name="aircraft">
+        <color value="A3"/>
+      </colortype>
+    </colorinvariant>
+    <colorinvariant>
+      <inscription inscription="&lt;= 60"/>
+      <colortype name="aircraft">
+        <color value="A4"/>
+      </colortype>
+    </colorinvariant>
+    <colorinvariant>
+      <inscription inscription="&lt;= 60"/>
+      <colortype name="aircraft">
+        <color value="A5"/>
+      </colortype>
+    </colorinvariant>
+    <type>
+      <text>aircraft</text>
+      <structure>
+        <usersort declaration="aircraft"/>
+      </structure>
+    </type>
+    <hlinitialMarking>
+      <text>1'aircraft.all</text>
+      <structure>
+        <add>
+          <subterm>
+            <numberof>
+              <subterm>
+                <numberconstant value="1">
+                  <positive/>
+                </numberconstant>
+              </subterm>
+              <subterm>
+                <all>
+                  <usersort declaration="aircraft"/>
+                </all>
+              </subterm>
+            </numberof>
+          </subterm>
+        </add>
+      </structure>
+    </hlinitialMarking>
+  </shared-place>
+  <shared-place initialMarking="5" invariant="&lt; inf" name="P_flying">
+    <colorinvariant>
+      <inscription inscription="&lt;= 4"/>
+      <colortype name="aircraft">
+        <color value="A1"/>
+      </colortype>
+    </colorinvariant>
+    <colorinvariant>
+      <inscription inscription="&lt;= 5"/>
+      <colortype name="aircraft">
+        <color value="A2"/>
+      </colortype>
+    </colorinvariant>
+    <colorinvariant>
+      <inscription inscription="&lt;= 6"/>
+      <colortype name="aircraft">
+        <color value="A3"/>
+      </colortype>
+    </colorinvariant>
+    <colorinvariant>
+      <inscription inscription="&lt;= 5"/>
+      <colortype name="aircraft">
+        <color value="A4"/>
+      </colortype>
+    </colorinvariant>
+    <colorinvariant>
+      <inscription inscription="&lt;= 7"/>
+      <colortype name="aircraft">
+        <color value="A5"/>
+      </colortype>
+    </colorinvariant>
+    <type>
+      <text>aircraft</text>
+      <structure>
+        <usersort declaration="aircraft"/>
+      </structure>
+    </type>
+    <hlinitialMarking>
+      <text>1'A1 + 1'A2 + 1'A3 + 1'A4 + 1'A5</text>
+      <structure>
+        <add>
+          <subterm>
+            <numberof>
+              <subterm>
+                <numberconstant value="1">
+                  <positive/>
+                </numberconstant>
+              </subterm>
+              <subterm>
+                <useroperator declaration="A1"/>
+              </subterm>
+            </numberof>
+          </subterm>
+          <subterm>
+            <numberof>
+              <subterm>
+                <numberconstant value="1">
+                  <positive/>
+                </numberconstant>
+              </subterm>
+              <subterm>
+                <useroperator declaration="A2"/>
+              </subterm>
+            </numberof>
+          </subterm>
+          <subterm>
+            <numberof>
+              <subterm>
+                <numberconstant value="1">
+                  <positive/>
+                </numberconstant>
+              </subterm>
+              <subterm>
+                <useroperator declaration="A3"/>
+              </subterm>
+            </numberof>
+          </subterm>
+          <subterm>
+            <numberof>
+              <subterm>
+                <numberconstant value="1">
+                  <positive/>
+                </numberconstant>
+              </subterm>
+              <subterm>
+                <useroperator declaration="A4"/>
+              </subterm>
+            </numberof>
+          </subterm>
+          <subterm>
+            <numberof>
+              <subterm>
+                <numberconstant value="1">
+                  <positive/>
+                </numberconstant>
+              </subterm>
+              <subterm>
+                <useroperator declaration="A5"/>
+              </subterm>
+            </numberof>
+          </subterm>
+        </add>
+      </structure>
+    </hlinitialMarking>
+  </shared-place>
+  <shared-place initialMarking="3" invariant="&lt; inf" name="P_ground_capacity">
+    <type>
+      <text>dot</text>
+      <structure>
+        <usersort declaration="dot"/>
+      </structure>
+    </type>
+    <hlinitialMarking>
+      <text>3'dot</text>
+      <structure>
+        <add>
+          <subterm>
+            <numberof>
+              <subterm>
+                <numberconstant value="3">
+                  <positive/>
+                </numberconstant>
+              </subterm>
+              <subterm>
+                <useroperator declaration="dot"/>
+              </subterm>
+            </numberof>
+          </subterm>
+        </add>
+      </structure>
+    </hlinitialMarking>
+  </shared-place>
+  <shared-place initialMarking="3" invariant="&lt; inf" name="P_crew">
+    <type>
+      <text>dot</text>
+      <structure>
+        <usersort declaration="dot"/>
+      </structure>
+    </type>
+    <hlinitialMarking>
+      <text>3'dot</text>
+      <structure>
+        <add>
+          <subterm>
+            <numberof>
+              <subterm>
+                <numberconstant value="3">
+                  <positive/>
+                </numberconstant>
+              </subterm>
+              <subterm>
+                <useroperator declaration="dot"/>
+              </subterm>
+            </numberof>
+          </subterm>
+        </add>
+      </structure>
+    </hlinitialMarking>
+  </shared-place>
+  <net active="true" id="TAPN1" type="P/T net">
+    <place displayName="true" id="P_flying" initialMarking="5" invariant="&lt; inf" name="P_flying" nameOffsetX="0" nameOffsetY="0" positionX="105" positionY="405">
+      <type>
+        <text>aircraft</text>
+        <structure>
+          <usersort declaration="aircraft"/>
+        </structure>
+      </type>
+      <hlinitialMarking>
+        <text>1'A1 + 1'A2 + 1'A3 + 1'A4 + 1'A5</text>
+        <structure>
+          <add>
+            <subterm>
+              <numberof>
+                <subterm>
+                  <numberconstant value="1">
+                    <positive/>
+                  </numberconstant>
+                </subterm>
+                <subterm>
+                  <useroperator declaration="A1"/>
+                </subterm>
+              </numberof>
+            </subterm>
+            <subterm>
+              <numberof>
+                <subterm>
+                  <numberconstant value="1">
+                    <positive/>
+                  </numberconstant>
+                </subterm>
+                <subterm>
+                  <useroperator declaration="A2"/>
+                </subterm>
+              </numberof>
+            </subterm>
+            <subterm>
+              <numberof>
+                <subterm>
+                  <numberconstant value="1">
+                    <positive/>
+                  </numberconstant>
+                </subterm>
+                <subterm>
+                  <useroperator declaration="A3"/>
+                </subterm>
+              </numberof>
+            </subterm>
+            <subterm>
+              <numberof>
+                <subterm>
+                  <numberconstant value="1">
+                    <positive/>
+                  </numberconstant>
+                </subterm>
+                <subterm>
+                  <useroperator declaration="A4"/>
+                </subterm>
+              </numberof>
+            </subterm>
+            <subterm>
+              <numberof>
+                <subterm>
+                  <numberconstant value="1">
+                    <positive/>
+                  </numberconstant>
+                </subterm>
+                <subterm>
+                  <useroperator declaration="A5"/>
+                </subterm>
+              </numberof>
+            </subterm>
+          </add>
+        </structure>
+      </hlinitialMarking>
+      <colorinvariant>
+        <inscription inscription="&lt;= 4"/>
+        <colortype name="aircraft">
+          <color value="A1"/>
+        </colortype>
+      </colorinvariant>
+      <colorinvariant>
+        <inscription inscription="&lt;= 5"/>
+        <colortype name="aircraft">
+          <color value="A2"/>
+        </colortype>
+      </colorinvariant>
+      <colorinvariant>
+        <inscription inscription="&lt;= 6"/>
+        <colortype name="aircraft">
+          <color value="A3"/>
+        </colortype>
+      </colorinvariant>
+      <colorinvariant>
+        <inscription inscription="&lt;= 5"/>
+        <colortype name="aircraft">
+          <color value="A4"/>
+        </colortype>
+      </colorinvariant>
+      <colorinvariant>
+        <inscription inscription="&lt;= 7"/>
+        <colortype name="aircraft">
+          <color value="A5"/>
+        </colortype>
+      </colorinvariant>
+    </place>
+    <place displayName="true" id="P_bay" initialMarking="0" invariant="&lt;= 17" name="P_bay" nameOffsetX="0" nameOffsetY="0" positionX="525" positionY="360">
+      <type>
+        <text>aircraft</text>
+        <structure>
+          <usersort declaration="aircraft"/>
+        </structure>
+      </type>
+    </place>
+    <place displayName="true" id="P_crew" initialMarking="3" invariant="&lt; inf" name="P_crew" nameOffsetX="0" nameOffsetY="0" positionX="1605" positionY="495">
+      <type>
+        <text>dot</text>
+        <structure>
+          <usersort declaration="dot"/>
+        </structure>
+      </type>
+      <hlinitialMarking>
+        <text>3'dot</text>
+        <structure>
+          <add>
+            <subterm>
+              <numberof>
+                <subterm>
+                  <numberconstant value="3">
+                    <positive/>
+                  </numberconstant>
+                </subterm>
+                <subterm>
+                  <useroperator declaration="dot"/>
+                </subterm>
+              </numberof>
+            </subterm>
+          </add>
+        </structure>
+      </hlinitialMarking>
+    </place>
+    <place displayName="true" id="P_ground_capacity" initialMarking="3" invariant="&lt; inf" name="P_ground_capacity" nameOffsetX="0" nameOffsetY="0" positionX="315" positionY="405">
+      <type>
+        <text>dot</text>
+        <structure>
+          <usersort declaration="dot"/>
+        </structure>
+      </type>
+      <hlinitialMarking>
+        <text>3'dot</text>
+        <structure>
+          <add>
+            <subterm>
+              <numberof>
+                <subterm>
+                  <numberconstant value="3">
+                    <positive/>
+                  </numberconstant>
+                </subterm>
+                <subterm>
+                  <useroperator declaration="dot"/>
+                </subterm>
+              </numberof>
+            </subterm>
+          </add>
+        </structure>
+      </hlinitialMarking>
+    </place>
+    <place displayName="true" id="P_lifespan" initialMarking="1" invariant="&lt; inf" name="P_lifespan" nameOffsetX="0" nameOffsetY="0" positionX="255" positionY="615">
+      <type>
+        <text>dot</text>
+        <structure>
+          <usersort declaration="dot"/>
+        </structure>
+      </type>
+      <hlinitialMarking>
+        <text>1'dot</text>
+        <structure>
+          <add>
+            <subterm>
+              <numberof>
+                <subterm>
+                  <numberconstant value="1">
+                    <positive/>
+                  </numberconstant>
+                </subterm>
+                <subterm>
+                  <useroperator declaration="dot"/>
+                </subterm>
+              </numberof>
+            </subterm>
+          </add>
+        </structure>
+      </hlinitialMarking>
+      <colorinvariant>
+        <inscription inscription="&lt;= 365"/>
+        <colortype name="dot">
+          <color value="dot"/>
+        </colortype>
+      </colorinvariant>
+    </place>
+    <place displayName="true" id="P_timer_1" initialMarking="5" invariant="&lt; inf" name="P_timer_1" nameOffsetX="0" nameOffsetY="0" positionX="615" positionY="195">
+      <type>
+        <text>aircraft</text>
+        <structure>
+          <usersort declaration="aircraft"/>
+        </structure>
+      </type>
+      <hlinitialMarking>
+        <text>1'aircraft.all</text>
+        <structure>
+          <add>
+            <subterm>
+              <numberof>
+                <subterm>
+                  <numberconstant value="1">
+                    <positive/>
+                  </numberconstant>
+                </subterm>
+                <subterm>
+                  <all>
+                    <usersort declaration="aircraft"/>
+                  </all>
+                </subterm>
+              </numberof>
+            </subterm>
+          </add>
+        </structure>
+      </hlinitialMarking>
+      <colorinvariant>
+        <inscription inscription="&lt;= 7"/>
+        <colortype name="aircraft">
+          <color value="A1"/>
+        </colortype>
+      </colorinvariant>
+      <colorinvariant>
+        <inscription inscription="&lt;= 7"/>
+        <colortype name="aircraft">
+          <color value="A2"/>
+        </colortype>
+      </colorinvariant>
+      <colorinvariant>
+        <inscription inscription="&lt;= 7"/>
+        <colortype name="aircraft">
+          <color value="A3"/>
+        </colortype>
+      </colorinvariant>
+      <colorinvariant>
+        <inscription inscription="&lt;= 7"/>
+        <colortype name="aircraft">
+          <color value="A4"/>
+        </colortype>
+      </colorinvariant>
+      <colorinvariant>
+        <inscription inscription="&lt;= 7"/>
+        <colortype name="aircraft">
+          <color value="A5"/>
+        </colortype>
+      </colorinvariant>
+    </place>
+    <place displayName="true" id="P_inter_1" initialMarking="0" invariant="&lt;= 2" name="P_inter_1" nameOffsetX="0" nameOffsetY="0" positionX="765" positionY="315">
+      <type>
+        <text>aircraft</text>
+        <structure>
+          <usersort declaration="aircraft"/>
+        </structure>
+      </type>
+    </place>
+    <place displayName="true" id="P_overdue_1" initialMarking="0" invariant="&lt;= 50" name="P_overdue_1" nameOffsetX="0" nameOffsetY="0" positionX="1140" positionY="195">
+      <type>
+        <text>aircraft</text>
+        <structure>
+          <usersort declaration="aircraft"/>
+        </structure>
+      </type>
+    </place>
+    <place displayName="true" id="P_count_1" initialMarking="0" invariant="&lt; inf" name="P_count_1" nameOffsetX="0" nameOffsetY="0" positionX="1080" positionY="75">
+      <type>
+        <text>aircraft</text>
+        <structure>
+          <usersort declaration="aircraft"/>
+        </structure>
+      </type>
+    </place>
+    <place displayName="true" id="P_timer_2" initialMarking="5" invariant="&lt; inf" name="P_timer_2" nameOffsetX="0" nameOffsetY="0" positionX="645" positionY="825">
+      <type>
+        <text>aircraft</text>
+        <structure>
+          <usersort declaration="aircraft"/>
+        </structure>
+      </type>
+      <hlinitialMarking>
+        <text>1'aircraft.all</text>
+        <structure>
+          <add>
+            <subterm>
+              <numberof>
+                <subterm>
+                  <numberconstant value="1">
+                    <positive/>
+                  </numberconstant>
+                </subterm>
+                <subterm>
+                  <all>
+                    <usersort declaration="aircraft"/>
+                  </all>
+                </subterm>
+              </numberof>
+            </subterm>
+          </add>
+        </structure>
+      </hlinitialMarking>
+      <colorinvariant>
+        <inscription inscription="&lt;= 18"/>
+        <colortype name="aircraft">
+          <color value="A1"/>
+        </colortype>
+      </colorinvariant>
+      <colorinvariant>
+        <inscription inscription="&lt;= 18"/>
+        <colortype name="aircraft">
+          <color value="A2"/>
+        </colortype>
+      </colorinvariant>
+      <colorinvariant>
+        <inscription inscription="&lt;= 18"/>
+        <colortype name="aircraft">
+          <color value="A3"/>
+        </colortype>
+      </colorinvariant>
+      <colorinvariant>
+        <inscription inscription="&lt;= 18"/>
+        <colortype name="aircraft">
+          <color value="A4"/>
+        </colortype>
+      </colorinvariant>
+      <colorinvariant>
+        <inscription inscription="&lt;= 18"/>
+        <colortype name="aircraft">
+          <color value="A5"/>
+        </colortype>
+      </colorinvariant>
+    </place>
+    <place displayName="true" id="P_inter_2" initialMarking="0" invariant="&lt;= 5" name="P_inter_2" nameOffsetX="0" nameOffsetY="0" positionX="765" positionY="735">
+      <type>
+        <text>aircraft</text>
+        <structure>
+          <usersort declaration="aircraft"/>
+        </structure>
+      </type>
+    </place>
+    <place displayName="true" id="P_overdue_2" initialMarking="0" invariant="&lt;= 50" name="P_overdue_2" nameOffsetX="0" nameOffsetY="0" positionX="1170" positionY="825">
+      <type>
+        <text>aircraft</text>
+        <structure>
+          <usersort declaration="aircraft"/>
+        </structure>
+      </type>
+    </place>
+    <place displayName="true" id="P_count_2" initialMarking="0" invariant="&lt; inf" name="P_count_2" nameOffsetX="0" nameOffsetY="0" positionX="855" positionY="930">
+      <type>
+        <text>aircraft</text>
+        <structure>
+          <usersort declaration="aircraft"/>
+        </structure>
+      </type>
+    </place>
+    <place displayName="true" id="P_timer_3" initialMarking="5" invariant="&lt; inf" name="P_timer_3" nameOffsetX="0" nameOffsetY="0" positionX="675" positionY="1185">
+      <type>
+        <text>aircraft</text>
+        <structure>
+          <usersort declaration="aircraft"/>
+        </structure>
+      </type>
+      <hlinitialMarking>
+        <text>1'aircraft.all</text>
+        <structure>
+          <add>
+            <subterm>
+              <numberof>
+                <subterm>
+                  <numberconstant value="1">
+                    <positive/>
+                  </numberconstant>
+                </subterm>
+                <subterm>
+                  <all>
+                    <usersort declaration="aircraft"/>
+                  </all>
+                </subterm>
+              </numberof>
+            </subterm>
+          </add>
+        </structure>
+      </hlinitialMarking>
+      <colorinvariant>
+        <inscription inscription="&lt;= 35"/>
+        <colortype name="aircraft">
+          <color value="A1"/>
+        </colortype>
+      </colorinvariant>
+      <colorinvariant>
+        <inscription inscription="&lt;= 35"/>
+        <colortype name="aircraft">
+          <color value="A2"/>
+        </colortype>
+      </colorinvariant>
+      <colorinvariant>
+        <inscription inscription="&lt;= 35"/>
+        <colortype name="aircraft">
+          <color value="A3"/>
+        </colortype>
+      </colorinvariant>
+      <colorinvariant>
+        <inscription inscription="&lt;= 35"/>
+        <colortype name="aircraft">
+          <color value="A4"/>
+        </colortype>
+      </colorinvariant>
+      <colorinvariant>
+        <inscription inscription="&lt;= 35"/>
+        <colortype name="aircraft">
+          <color value="A5"/>
+        </colortype>
+      </colorinvariant>
+    </place>
+    <place displayName="true" id="P_inter_3" initialMarking="0" invariant="&lt;= 10" name="P_inter_3" nameOffsetX="0" nameOffsetY="0" positionX="765" positionY="1095">
+      <type>
+        <text>aircraft</text>
+        <structure>
+          <usersort declaration="aircraft"/>
+        </structure>
+      </type>
+    </place>
+    <place displayName="true" id="P_overdue_3" initialMarking="0" invariant="&lt;= 61" name="P_overdue_3" nameOffsetX="0" nameOffsetY="0" positionX="1200" positionY="1185">
+      <type>
+        <text>aircraft</text>
+        <structure>
+          <usersort declaration="aircraft"/>
+        </structure>
+      </type>
+    </place>
+    <place displayName="true" id="P_count_3" initialMarking="0" invariant="&lt; inf" name="P_count_3" nameOffsetX="0" nameOffsetY="0" positionX="825" positionY="1170">
+      <type>
+        <text>aircraft</text>
+        <structure>
+          <usersort declaration="aircraft"/>
+        </structure>
+      </type>
+    </place>
+    <place displayName="true" id="P_timer_4" initialMarking="5" invariant="&lt; inf" name="P_timer_4" nameOffsetX="0" nameOffsetY="0" positionX="615" positionY="1650">
+      <type>
+        <text>aircraft</text>
+        <structure>
+          <usersort declaration="aircraft"/>
+        </structure>
+      </type>
+      <hlinitialMarking>
+        <text>1'aircraft.all</text>
+        <structure>
+          <add>
+            <subterm>
+              <numberof>
+                <subterm>
+                  <numberconstant value="1">
+                    <positive/>
+                  </numberconstant>
+                </subterm>
+                <subterm>
+                  <all>
+                    <usersort declaration="aircraft"/>
+                  </all>
+                </subterm>
+              </numberof>
+            </subterm>
+          </add>
+        </structure>
+      </hlinitialMarking>
+      <colorinvariant>
+        <inscription inscription="&lt;= 60"/>
+        <colortype name="aircraft">
+          <color value="A1"/>
+        </colortype>
+      </colorinvariant>
+      <colorinvariant>
+        <inscription inscription="&lt;= 60"/>
+        <colortype name="aircraft">
+          <color value="A2"/>
+        </colortype>
+      </colorinvariant>
+      <colorinvariant>
+        <inscription inscription="&lt;= 60"/>
+        <colortype name="aircraft">
+          <color value="A3"/>
+        </colortype>
+      </colorinvariant>
+      <colorinvariant>
+        <inscription inscription="&lt;= 60"/>
+        <colortype name="aircraft">
+          <color value="A4"/>
+        </colortype>
+      </colorinvariant>
+      <colorinvariant>
+        <inscription inscription="&lt;= 60"/>
+        <colortype name="aircraft">
+          <color value="A5"/>
+        </colortype>
+      </colorinvariant>
+    </place>
+    <place displayName="true" id="P_inter_4" initialMarking="0" invariant="&lt;= 15" name="P_inter_4" nameOffsetX="0" nameOffsetY="0" positionX="765" positionY="1455">
+      <type>
+        <text>aircraft</text>
+        <structure>
+          <usersort declaration="aircraft"/>
+        </structure>
+      </type>
+    </place>
+    <place displayName="true" id="P_overdue_4" initialMarking="0" invariant="&lt;= 105" name="P_overdue_4" nameOffsetX="0" nameOffsetY="0" positionX="1230" positionY="1545">
+      <type>
+        <text>aircraft</text>
+        <structure>
+          <usersort declaration="aircraft"/>
+        </structure>
+      </type>
+    </place>
+    <place displayName="true" id="P_count_4" initialMarking="0" invariant="&lt; inf" name="P_count_4" nameOffsetX="0" nameOffsetY="0" positionX="975" positionY="1455">
+      <type>
+        <text>aircraft</text>
+        <structure>
+          <usersort declaration="aircraft"/>
+        </structure>
+      </type>
+    </place>
+    <place displayName="true" id="P_inter_P12" initialMarking="0" invariant="&lt;= 3" name="P_inter_P12" nameOffsetX="0" nameOffsetY="0" positionX="855" positionY="435">
+      <type>
+        <text>aircraft</text>
+        <structure>
+          <usersort declaration="aircraft"/>
+        </structure>
+      </type>
+    </place>
+    <place displayName="true" id="P_count_P12" initialMarking="0" invariant="&lt; inf" name="P_count_P12" nameOffsetX="0" nameOffsetY="0" positionX="495" positionY="705">
+      <type>
+        <text>aircraft</text>
+        <structure>
+          <usersort declaration="aircraft"/>
+        </structure>
+      </type>
+    </place>
+    <transition angle="0" displayName="true" distribution="constant" firingMode="Random" id="T_enter" infiniteServer="false" name="T_enter" nameOffsetX="0" nameOffsetY="0" player="0" positionX="405" positionY="300" priority="0" urgent="false" value="1.0" weight="1.0"/>
+    <transition angle="0" displayName="true" distribution="constant" firingMode="Random" id="T_exit" infiniteServer="false" name="T_exit" nameOffsetX="0" nameOffsetY="0" player="0" positionX="405" positionY="510" priority="0" urgent="false" value="1.0" weight="1.0"/>
+    <transition angle="0" displayName="true" distribution="constant" firingMode="Random" id="T_maint_1" infiniteServer="false" name="T_maint_1" nameOffsetX="0" nameOffsetY="0" player="0" positionX="765" positionY="195" priority="0" urgent="false" value="1.0" weight="1.0"/>
+    <transition angle="0" displayName="true" distribution="constant" firingMode="Random" id="T_return_1" infiniteServer="false" name="T_return_1" nameOffsetX="0" nameOffsetY="0" player="0" positionX="765" positionY="390" priority="0" urgent="false" value="1.0" weight="1.0"/>
+    <transition angle="0" displayName="true" distribution="constant" firingMode="Random" id="T_overdue_1" infiniteServer="false" name="T_overdue_1" nameOffsetX="0" nameOffsetY="0" player="0" positionX="990" positionY="195" priority="0" urgent="false" value="1.0" weight="1.0"/>
+    <transition angle="0" displayName="true" distribution="constant" firingMode="Random" id="T_maint_2" infiniteServer="false" name="T_maint_2" nameOffsetX="0" nameOffsetY="0" player="0" positionX="765" positionY="825" priority="0" urgent="false" value="1.0" weight="1.0"/>
+    <transition angle="0" displayName="true" distribution="constant" firingMode="Random" id="T_return_2" infiniteServer="false" name="T_return_2" nameOffsetX="0" nameOffsetY="0" player="0" positionX="765" positionY="660" priority="0" urgent="false" value="1.0" weight="1.0"/>
+    <transition angle="0" displayName="true" distribution="constant" firingMode="Random" id="T_overdue_2" infiniteServer="false" name="T_overdue_2" nameOffsetX="0" nameOffsetY="0" player="0" positionX="1005" positionY="825" priority="0" urgent="false" value="1.0" weight="1.0"/>
+    <transition angle="0" displayName="true" distribution="constant" firingMode="Random" id="T_maint_3" infiniteServer="false" name="T_maint_3" nameOffsetX="0" nameOffsetY="0" player="0" positionX="765" positionY="1185" priority="0" urgent="false" value="1.0" weight="1.0"/>
+    <transition angle="0" displayName="true" distribution="constant" firingMode="Random" id="T_return_3" infiniteServer="false" name="T_return_3" nameOffsetX="0" nameOffsetY="0" player="0" positionX="765" positionY="1020" priority="0" urgent="false" value="1.0" weight="1.0"/>
+    <transition angle="0" displayName="true" distribution="constant" firingMode="Random" id="T_overdue_3" infiniteServer="false" name="T_overdue_3" nameOffsetX="0" nameOffsetY="0" player="0" positionX="1020" positionY="1185" priority="0" urgent="false" value="1.0" weight="1.0"/>
+    <transition angle="0" displayName="true" distribution="constant" firingMode="Random" id="T_maint_4" infiniteServer="false" name="T_maint_4" nameOffsetX="0" nameOffsetY="0" player="0" positionX="765" positionY="1545" priority="0" urgent="false" value="1.0" weight="1.0"/>
+    <transition angle="270" displayName="true" distribution="constant" firingMode="Random" id="T_return_4" infiniteServer="false" name="T_return_4" nameOffsetX="0" nameOffsetY="0" player="0" positionX="540" positionY="1395" priority="0" urgent="false" value="1.0" weight="1.0"/>
+    <transition angle="0" displayName="true" distribution="constant" firingMode="Random" id="T_overdue_4" infiniteServer="false" name="T_overdue_4" nameOffsetX="0" nameOffsetY="0" player="0" positionX="1035" positionY="1545" priority="0" urgent="false" value="1.0" weight="1.0"/>
+    <transition angle="0" displayName="true" distribution="constant" firingMode="Random" id="T_maint_P12" infiniteServer="false" name="T_maint_P12" nameOffsetX="0" nameOffsetY="0" player="0" positionX="495" positionY="600" priority="0" urgent="false" value="1.0" weight="1.0"/>
+    <transition angle="0" displayName="true" distribution="constant" firingMode="Random" id="T_return_P12" infiniteServer="false" name="T_return_P12" nameOffsetX="0" nameOffsetY="0" player="0" positionX="795" positionY="600" priority="0" urgent="false" value="1.0" weight="1.0"/>
+    <arc id="A0" inscription="[1,7]" nameOffsetX="0" nameOffsetY="0" source="P_flying" target="T_enter" type="timed" weight="1">
+      <hlinscription>
+        <text>1'air</text>
+        <structure>
+          <numberof>
+            <subterm>
+              <numberconstant value="1">
+                <positive/>
+              </numberconstant>
+            </subterm>
+            <subterm>
+              <variable refvariable="air"/>
+            </subterm>
+          </numberof>
+        </structure>
+      </hlinscription>
+      <arcpath arcPointType="false" id="0" xCoord="135" yCoord="415"/>
+      <arcpath arcPointType="false" id="1" xCoord="416" yCoord="311"/>
+    </arc>
+    <arc id="A1" inscription="[0,inf)" nameOffsetX="0" nameOffsetY="0" source="P_ground_capacity" target="T_enter" type="timed" weight="1">
+      <hlinscription>
+        <text>1'dot</text>
+        <structure>
+          <numberof>
+            <subterm>
+              <numberconstant value="1">
+                <positive/>
+              </numberconstant>
+            </subterm>
+            <subterm>
+              <useroperator declaration="dot"/>
+            </subterm>
+          </numberof>
+        </structure>
+      </hlinscription>
+      <arcpath arcPointType="false" id="0" xCoord="340" yCoord="409"/>
+      <arcpath arcPointType="false" id="1" xCoord="415" yCoord="321"/>
+    </arc>
+    <arc id="A2" inscription="1" nameOffsetX="0" nameOffsetY="0" source="T_enter" target="P_bay" type="normal" weight="1">
+      <hlinscription>
+        <text>1'air</text>
+        <structure>
+          <numberof>
+            <subterm>
+              <numberconstant value="1">
+                <positive/>
+              </numberconstant>
+            </subterm>
+            <subterm>
+              <variable refvariable="air"/>
+            </subterm>
+          </numberof>
+        </structure>
+      </hlinscription>
+      <arcpath arcPointType="false" id="0" xCoord="425" yCoord="316"/>
+      <arcpath arcPointType="false" id="1" xCoord="527" yCoord="368"/>
+    </arc>
+    <arc id="A3" inscription="[0,inf)" nameOffsetX="0" nameOffsetY="0" source="P_bay" target="T_exit" type="timed" weight="1">
+      <hlinscription>
+        <text>1'air</text>
+        <structure>
+          <numberof>
+            <subterm>
+              <numberconstant value="1">
+                <positive/>
+              </numberconstant>
+            </subterm>
+            <subterm>
+              <variable refvariable="air"/>
+            </subterm>
+          </numberof>
+        </structure>
+      </hlinscription>
+      <arcpath arcPointType="false" id="0" xCoord="532" yCoord="387"/>
+      <arcpath arcPointType="false" id="1" xCoord="425" yCoord="526"/>
+    </arc>
+    <arc id="A4" inscription="1" nameOffsetX="0" nameOffsetY="0" source="T_exit" target="P_flying" type="normal" weight="1">
+      <hlinscription>
+        <text>1'air</text>
+        <structure>
+          <numberof>
+            <subterm>
+              <numberconstant value="1">
+                <positive/>
+              </numberconstant>
+            </subterm>
+            <subterm>
+              <variable refvariable="air"/>
+            </subterm>
+          </numberof>
+        </structure>
+      </hlinscription>
+      <arcpath arcPointType="false" id="0" xCoord="415" yCoord="531"/>
+      <arcpath arcPointType="false" id="1" xCoord="135" yCoord="426"/>
+    </arc>
+    <arc id="A5" inscription="1" nameOffsetX="0" nameOffsetY="0" source="T_exit" target="P_ground_capacity" type="normal" weight="1">
+      <hlinscription>
+        <text>1'dot</text>
+        <structure>
+          <numberof>
+            <subterm>
+              <numberconstant value="1">
+                <positive/>
+              </numberconstant>
+            </subterm>
+            <subterm>
+              <useroperator declaration="dot"/>
+            </subterm>
+          </numberof>
+        </structure>
+      </hlinscription>
+      <arcpath arcPointType="false" id="0" xCoord="416" yCoord="521"/>
+      <arcpath arcPointType="false" id="1" xCoord="340" yCoord="432"/>
+    </arc>
+    <arc id="A6" inscription="[3,7]" nameOffsetX="0" nameOffsetY="0" source="P_timer_1" target="T_maint_1" type="timed" weight="1">
+      <hlinscription>
+        <text>1'air</text>
+        <structure>
+          <numberof>
+            <subterm>
+              <numberconstant value="1">
+                <positive/>
+              </numberconstant>
+            </subterm>
+            <subterm>
+              <variable refvariable="air"/>
+            </subterm>
+          </numberof>
+        </structure>
+      </hlinscription>
+      <arcpath arcPointType="false" id="0" xCoord="645" yCoord="210"/>
+      <arcpath arcPointType="false" id="1" xCoord="776" yCoord="206"/>
+    </arc>
+    <arc id="A7" inscription="[0,inf)" nameOffsetX="0" nameOffsetY="0" source="P_bay" target="T_maint_1" type="timed" weight="1">
+      <hlinscription>
+        <text>1'air</text>
+        <structure>
+          <numberof>
+            <subterm>
+              <numberconstant value="1">
+                <positive/>
+              </numberconstant>
+            </subterm>
+            <subterm>
+              <variable refvariable="air"/>
+            </subterm>
+          </numberof>
+        </structure>
+      </hlinscription>
+      <arcpath arcPointType="false" id="0" xCoord="553" yCoord="367"/>
+      <arcpath arcPointType="false" id="1" xCoord="775" yCoord="216"/>
+    </arc>
+    <arc id="A8" inscription="[0,inf)" nameOffsetX="0" nameOffsetY="0" source="P_crew" target="T_maint_1" type="timed" weight="1">
+      <hlinscription>
+        <text>1'dot.all</text>
+        <structure>
+          <numberof>
+            <subterm>
+              <numberconstant value="1">
+                <positive/>
+              </numberconstant>
+            </subterm>
+            <subterm>
+              <all>
+                <usersort declaration="dot"/>
+              </all>
+            </subterm>
+          </numberof>
+        </structure>
+      </hlinscription>
+      <arcpath arcPointType="false" id="0" xCoord="1606" yCoord="506"/>
+      <arcpath arcPointType="false" id="1" xCoord="785" yCoord="216"/>
+    </arc>
+    <arc id="A9" inscription="1" nameOffsetX="0" nameOffsetY="0" source="T_maint_1" target="P_inter_1" type="normal" weight="1">
+      <hlinscription>
+        <text>1'air</text>
+        <structure>
+          <numberof>
+            <subterm>
+              <numberconstant value="1">
+                <positive/>
+              </numberconstant>
+            </subterm>
+            <subterm>
+              <variable refvariable="air"/>
+            </subterm>
+          </numberof>
+        </structure>
+      </hlinscription>
+      <arcpath arcPointType="false" id="0" xCoord="781" yCoord="226"/>
+      <arcpath arcPointType="false" id="1" xCoord="781" yCoord="316"/>
+    </arc>
+    <arc id="A10" inscription="1" nameOffsetX="0" nameOffsetY="0" source="T_maint_1" target="P_count_1" type="normal" weight="1">
+      <hlinscription>
+        <text>1'air</text>
+        <structure>
+          <numberof>
+            <subterm>
+              <numberconstant value="1">
+                <positive/>
+              </numberconstant>
+            </subterm>
+            <subterm>
+              <variable refvariable="air"/>
+            </subterm>
+          </numberof>
+        </structure>
+      </hlinscription>
+      <arcpath arcPointType="false" id="0" xCoord="786" yCoord="206"/>
+      <arcpath arcPointType="false" id="1" xCoord="1081" yCoord="96"/>
+    </arc>
+    <arc id="A11" inscription="[0,inf)" nameOffsetX="0" nameOffsetY="0" source="P_inter_1" target="T_return_1" type="timed" weight="1">
+      <hlinscription>
+        <text>1'air</text>
+        <structure>
+          <numberof>
+            <subterm>
+              <numberconstant value="1">
+                <positive/>
+              </numberconstant>
+            </subterm>
+            <subterm>
+              <variable refvariable="air"/>
+            </subterm>
+          </numberof>
+        </structure>
+      </hlinscription>
+      <arcpath arcPointType="false" id="0" xCoord="781" yCoord="346"/>
+      <arcpath arcPointType="false" id="1" xCoord="781" yCoord="390"/>
+    </arc>
+    <arc id="A12" inscription="1" nameOffsetX="0" nameOffsetY="0" source="T_return_1" target="P_timer_1" type="normal" weight="1">
+      <hlinscription>
+        <text>1'air</text>
+        <structure>
+          <numberof>
+            <subterm>
+              <numberconstant value="1">
+                <positive/>
+              </numberconstant>
+            </subterm>
+            <subterm>
+              <variable refvariable="air"/>
+            </subterm>
+          </numberof>
+        </structure>
+      </hlinscription>
+      <arcpath arcPointType="false" id="0" xCoord="776" yCoord="401"/>
+      <arcpath arcPointType="false" id="1" xCoord="639" yCoord="223"/>
+    </arc>
+    <arc id="A13" inscription="1" nameOffsetX="0" nameOffsetY="0" source="T_return_1" target="P_crew" type="normal" weight="1">
+      <hlinscription>
+        <text>1'dot.all</text>
+        <structure>
+          <numberof>
+            <subterm>
+              <numberconstant value="1">
+                <positive/>
+              </numberconstant>
+            </subterm>
+            <subterm>
+              <all>
+                <usersort declaration="dot"/>
+              </all>
+            </subterm>
+          </numberof>
+        </structure>
+      </hlinscription>
+      <arcpath arcPointType="false" id="0" xCoord="785" yCoord="406"/>
+      <arcpath arcPointType="false" id="1" xCoord="1606" yCoord="508"/>
+    </arc>
+    <arc id="A14" inscription="1" nameOffsetX="0" nameOffsetY="0" source="T_return_1" target="P_bay" type="normal" weight="1">
+      <hlinscription>
+        <text>1'air</text>
+        <structure>
+          <numberof>
+            <subterm>
+              <numberconstant value="1">
+                <positive/>
+              </numberconstant>
+            </subterm>
+            <subterm>
+              <variable refvariable="air"/>
+            </subterm>
+          </numberof>
+        </structure>
+      </hlinscription>
+      <arcpath arcPointType="false" id="0" xCoord="775" yCoord="411"/>
+      <arcpath arcPointType="false" id="1" xCoord="555" yCoord="377"/>
+    </arc>
+    <arc id="A15" inscription="[7,inf)" nameOffsetX="0" nameOffsetY="0" source="P_timer_1" target="T_overdue_1" type="timed" weight="1">
+      <hlinscription>
+        <text>1'air</text>
+        <structure>
+          <numberof>
+            <subterm>
+              <numberconstant value="1">
+                <positive/>
+              </numberconstant>
+            </subterm>
+            <subterm>
+              <variable refvariable="air"/>
+            </subterm>
+          </numberof>
+        </structure>
+      </hlinscription>
+      <arcpath arcPointType="false" id="0" xCoord="646" yCoord="211"/>
+      <arcpath arcPointType="false" id="1" xCoord="1000" yCoord="211"/>
+    </arc>
+    <arc id="A16" inscription="1" nameOffsetX="0" nameOffsetY="0" source="T_overdue_1" target="P_overdue_1" type="normal" weight="1">
+      <hlinscription>
+        <text>1'air</text>
+        <structure>
+          <numberof>
+            <subterm>
+              <numberconstant value="1">
+                <positive/>
+              </numberconstant>
+            </subterm>
+            <subterm>
+              <variable refvariable="air"/>
+            </subterm>
+          </numberof>
+        </structure>
+      </hlinscription>
+      <arcpath arcPointType="false" id="0" xCoord="1010" yCoord="211"/>
+      <arcpath arcPointType="false" id="1" xCoord="1141" yCoord="211"/>
+    </arc>
+    <arc id="A17" inscription="[8,18]" nameOffsetX="0" nameOffsetY="0" source="P_timer_2" target="T_maint_2" type="timed" weight="1">
+      <hlinscription>
+        <text>1'air</text>
+        <structure>
+          <numberof>
+            <subterm>
+              <numberconstant value="1">
+                <positive/>
+              </numberconstant>
+            </subterm>
+            <subterm>
+              <variable refvariable="air"/>
+            </subterm>
+          </numberof>
+        </structure>
+      </hlinscription>
+      <arcpath arcPointType="false" id="0" xCoord="676" yCoord="841"/>
+      <arcpath arcPointType="false" id="1" xCoord="775" yCoord="841"/>
+    </arc>
+    <arc id="A18" inscription="[0,inf)" nameOffsetX="0" nameOffsetY="0" source="P_bay" target="T_maint_2" type="timed" weight="1">
+      <hlinscription>
+        <text>1'air</text>
+        <structure>
+          <numberof>
+            <subterm>
+              <numberconstant value="1">
+                <positive/>
+              </numberconstant>
+            </subterm>
+            <subterm>
+              <variable refvariable="air"/>
+            </subterm>
+          </numberof>
+        </structure>
+      </hlinscription>
+      <arcpath arcPointType="false" id="0" xCoord="547" yCoord="388"/>
+      <arcpath arcPointType="false" id="1" xCoord="781" yCoord="825"/>
+    </arc>
+    <arc id="A19" inscription="[0,inf)" nameOffsetX="0" nameOffsetY="0" source="P_crew" target="T_maint_2" type="timed" weight="1">
+      <hlinscription>
+        <text>1'dot.all</text>
+        <structure>
+          <numberof>
+            <subterm>
+              <numberconstant value="1">
+                <positive/>
+              </numberconstant>
+            </subterm>
+            <subterm>
+              <all>
+                <usersort declaration="dot"/>
+              </all>
+            </subterm>
+          </numberof>
+        </structure>
+      </hlinscription>
+      <arcpath arcPointType="false" id="0" xCoord="1606" yCoord="516"/>
+      <arcpath arcPointType="false" id="1" xCoord="786" yCoord="836"/>
+    </arc>
+    <arc id="A20" inscription="1" nameOffsetX="0" nameOffsetY="0" source="T_maint_2" target="P_inter_2" type="normal" weight="1">
+      <hlinscription>
+        <text>1'air</text>
+        <structure>
+          <numberof>
+            <subterm>
+              <numberconstant value="1">
+                <positive/>
+              </numberconstant>
+            </subterm>
+            <subterm>
+              <variable refvariable="air"/>
+            </subterm>
+          </numberof>
+        </structure>
+      </hlinscription>
+      <arcpath arcPointType="false" id="0" xCoord="781" yCoord="825"/>
+      <arcpath arcPointType="false" id="1" xCoord="781" yCoord="766"/>
+    </arc>
+    <arc id="A21" inscription="1" nameOffsetX="0" nameOffsetY="0" source="T_maint_2" target="P_count_2" type="normal" weight="1">
+      <hlinscription>
+        <text>1'air</text>
+        <structure>
+          <numberof>
+            <subterm>
+              <numberconstant value="1">
+                <positive/>
+              </numberconstant>
+            </subterm>
+            <subterm>
+              <variable refvariable="air"/>
+            </subterm>
+          </numberof>
+        </structure>
+      </hlinscription>
+      <arcpath arcPointType="false" id="0" xCoord="785" yCoord="846"/>
+      <arcpath arcPointType="false" id="1" xCoord="861" yCoord="934"/>
+    </arc>
+    <arc id="A22" inscription="[0,inf)" nameOffsetX="0" nameOffsetY="0" source="P_inter_2" target="T_return_2" type="timed" weight="1">
+      <hlinscription>
+        <text>1'air</text>
+        <structure>
+          <numberof>
+            <subterm>
+              <numberconstant value="1">
+                <positive/>
+              </numberconstant>
+            </subterm>
+            <subterm>
+              <variable refvariable="air"/>
+            </subterm>
+          </numberof>
+        </structure>
+      </hlinscription>
+      <arcpath arcPointType="false" id="0" xCoord="781" yCoord="736"/>
+      <arcpath arcPointType="false" id="1" xCoord="781" yCoord="691"/>
+    </arc>
+    <arc id="A23" inscription="1" nameOffsetX="0" nameOffsetY="0" source="T_return_2" target="P_timer_2" type="normal" weight="1">
+      <hlinscription>
+        <text>1'air</text>
+        <structure>
+          <numberof>
+            <subterm>
+              <numberconstant value="1">
+                <positive/>
+              </numberconstant>
+            </subterm>
+            <subterm>
+              <variable refvariable="air"/>
+            </subterm>
+          </numberof>
+        </structure>
+      </hlinscription>
+      <arcpath arcPointType="false" id="0" xCoord="775" yCoord="681"/>
+      <arcpath arcPointType="false" id="1" xCoord="669" yCoord="828"/>
+    </arc>
+    <arc id="A24" inscription="1" nameOffsetX="0" nameOffsetY="0" source="T_return_2" target="P_crew" type="normal" weight="1">
+      <hlinscription>
+        <text>1'dot.all</text>
+        <structure>
+          <numberof>
+            <subterm>
+              <numberconstant value="1">
+                <positive/>
+              </numberconstant>
+            </subterm>
+            <subterm>
+              <all>
+                <usersort declaration="dot"/>
+              </all>
+            </subterm>
+          </numberof>
+        </structure>
+      </hlinscription>
+      <arcpath arcPointType="false" id="0" xCoord="785" yCoord="676"/>
+      <arcpath arcPointType="false" id="1" xCoord="1606" yCoord="514"/>
+    </arc>
+    <arc id="A25" inscription="1" nameOffsetX="0" nameOffsetY="0" source="T_return_2" target="P_bay" type="normal" weight="1">
+      <hlinscription>
+        <text>1'air</text>
+        <structure>
+          <numberof>
+            <subterm>
+              <numberconstant value="1">
+                <positive/>
+              </numberconstant>
+            </subterm>
+            <subterm>
+              <variable refvariable="air"/>
+            </subterm>
+          </numberof>
+        </structure>
+      </hlinscription>
+      <arcpath arcPointType="false" id="0" xCoord="776" yCoord="671"/>
+      <arcpath arcPointType="false" id="1" xCoord="550" yCoord="387"/>
+    </arc>
+    <arc id="A26" inscription="[18,inf)" nameOffsetX="0" nameOffsetY="0" source="P_timer_2" target="T_overdue_2" type="timed" weight="1">
+      <hlinscription>
+        <text>1'air</text>
+        <structure>
+          <numberof>
+            <subterm>
+              <numberconstant value="1">
+                <positive/>
+              </numberconstant>
+            </subterm>
+            <subterm>
+              <variable refvariable="air"/>
+            </subterm>
+          </numberof>
+        </structure>
+      </hlinscription>
+      <arcpath arcPointType="false" id="0" xCoord="676" yCoord="841"/>
+      <arcpath arcPointType="false" id="1" xCoord="1015" yCoord="841"/>
+    </arc>
+    <arc id="A27" inscription="1" nameOffsetX="0" nameOffsetY="0" source="T_overdue_2" target="P_overdue_2" type="normal" weight="1">
+      <hlinscription>
+        <text>1'air</text>
+        <structure>
+          <numberof>
+            <subterm>
+              <numberconstant value="1">
+                <positive/>
+              </numberconstant>
+            </subterm>
+            <subterm>
+              <variable refvariable="air"/>
+            </subterm>
+          </numberof>
+        </structure>
+      </hlinscription>
+      <arcpath arcPointType="false" id="0" xCoord="1025" yCoord="841"/>
+      <arcpath arcPointType="false" id="1" xCoord="1171" yCoord="841"/>
+    </arc>
+    <arc id="A28" inscription="[15,35]" nameOffsetX="0" nameOffsetY="0" source="P_timer_3" target="T_maint_3" type="timed" weight="1">
+      <hlinscription>
+        <text>1'air</text>
+        <structure>
+          <numberof>
+            <subterm>
+              <numberconstant value="1">
+                <positive/>
+              </numberconstant>
+            </subterm>
+            <subterm>
+              <variable refvariable="air"/>
+            </subterm>
+          </numberof>
+        </structure>
+      </hlinscription>
+      <arcpath arcPointType="false" id="0" xCoord="706" yCoord="1201"/>
+      <arcpath arcPointType="false" id="1" xCoord="775" yCoord="1201"/>
+    </arc>
+    <arc id="A29" inscription="[0,inf)" nameOffsetX="0" nameOffsetY="0" source="P_bay" target="T_maint_3" type="timed" weight="1">
+      <hlinscription>
+        <text>1'air</text>
+        <structure>
+          <numberof>
+            <subterm>
+              <numberconstant value="1">
+                <positive/>
+              </numberconstant>
+            </subterm>
+            <subterm>
+              <variable refvariable="air"/>
+            </subterm>
+          </numberof>
+        </structure>
+      </hlinscription>
+      <arcpath arcPointType="false" id="0" xCoord="545" yCoord="389"/>
+      <arcpath arcPointType="false" id="1" xCoord="781" yCoord="1185"/>
+    </arc>
+    <arc id="A30" inscription="[0,inf)" nameOffsetX="0" nameOffsetY="0" source="P_crew" target="T_maint_3" type="timed" weight="1">
+      <hlinscription>
+        <text>1'dot.all</text>
+        <structure>
+          <numberof>
+            <subterm>
+              <numberconstant value="1">
+                <positive/>
+              </numberconstant>
+            </subterm>
+            <subterm>
+              <all>
+                <usersort declaration="dot"/>
+              </all>
+            </subterm>
+          </numberof>
+        </structure>
+      </hlinscription>
+      <arcpath arcPointType="false" id="0" xCoord="1609" yCoord="520"/>
+      <arcpath arcPointType="false" id="1" xCoord="786" yCoord="1196"/>
+    </arc>
+    <arc id="A31" inscription="1" nameOffsetX="0" nameOffsetY="0" source="T_maint_3" target="P_inter_3" type="normal" weight="1">
+      <hlinscription>
+        <text>1'air</text>
+        <structure>
+          <numberof>
+            <subterm>
+              <numberconstant value="1">
+                <positive/>
+              </numberconstant>
+            </subterm>
+            <subterm>
+              <variable refvariable="air"/>
+            </subterm>
+          </numberof>
+        </structure>
+      </hlinscription>
+      <arcpath arcPointType="false" id="0" xCoord="781" yCoord="1185"/>
+      <arcpath arcPointType="false" id="1" xCoord="781" yCoord="1126"/>
+    </arc>
+    <arc id="A32" inscription="1" nameOffsetX="0" nameOffsetY="0" source="T_maint_3" target="P_count_3" type="normal" weight="1">
+      <hlinscription>
+        <text>1'air</text>
+        <structure>
+          <numberof>
+            <subterm>
+              <numberconstant value="1">
+                <positive/>
+              </numberconstant>
+            </subterm>
+            <subterm>
+              <variable refvariable="air"/>
+            </subterm>
+          </numberof>
+        </structure>
+      </hlinscription>
+      <arcpath arcPointType="false" id="0" xCoord="785" yCoord="1206"/>
+      <arcpath arcPointType="false" id="1" xCoord="826" yCoord="1191"/>
+    </arc>
+    <arc id="A33" inscription="[0,inf)" nameOffsetX="0" nameOffsetY="0" source="P_inter_3" target="T_return_3" type="timed" weight="1">
+      <hlinscription>
+        <text>1'air</text>
+        <structure>
+          <numberof>
+            <subterm>
+              <numberconstant value="1">
+                <positive/>
+              </numberconstant>
+            </subterm>
+            <subterm>
+              <variable refvariable="air"/>
+            </subterm>
+          </numberof>
+        </structure>
+      </hlinscription>
+      <arcpath arcPointType="false" id="0" xCoord="781" yCoord="1096"/>
+      <arcpath arcPointType="false" id="1" xCoord="781" yCoord="1051"/>
+    </arc>
+    <arc id="A34" inscription="1" nameOffsetX="0" nameOffsetY="0" source="T_return_3" target="P_timer_3" type="normal" weight="1">
+      <hlinscription>
+        <text>1'air</text>
+        <structure>
+          <numberof>
+            <subterm>
+              <numberconstant value="1">
+                <positive/>
+              </numberconstant>
+            </subterm>
+            <subterm>
+              <variable refvariable="air"/>
+            </subterm>
+          </numberof>
+        </structure>
+      </hlinscription>
+      <arcpath arcPointType="false" id="0" xCoord="781" yCoord="1051"/>
+      <arcpath arcPointType="false" id="1" xCoord="698" yCoord="1188"/>
+    </arc>
+    <arc id="A35" inscription="1" nameOffsetX="0" nameOffsetY="0" source="T_return_3" target="P_crew" type="normal" weight="1">
+      <hlinscription>
+        <text>1'dot.all</text>
+        <structure>
+          <numberof>
+            <subterm>
+              <numberconstant value="1">
+                <positive/>
+              </numberconstant>
+            </subterm>
+            <subterm>
+              <all>
+                <usersort declaration="dot"/>
+              </all>
+            </subterm>
+          </numberof>
+        </structure>
+      </hlinscription>
+      <arcpath arcPointType="false" id="0" xCoord="785" yCoord="1036"/>
+      <arcpath arcPointType="false" id="1" xCoord="1608" yCoord="518"/>
+    </arc>
+    <arc id="A36" inscription="1" nameOffsetX="0" nameOffsetY="0" source="T_return_3" target="P_bay" type="normal" weight="1">
+      <hlinscription>
+        <text>1'air</text>
+        <structure>
+          <numberof>
+            <subterm>
+              <numberconstant value="1">
+                <positive/>
+              </numberconstant>
+            </subterm>
+            <subterm>
+              <variable refvariable="air"/>
+            </subterm>
+          </numberof>
+        </structure>
+      </hlinscription>
+      <arcpath arcPointType="false" id="0" xCoord="781" yCoord="1020"/>
+      <arcpath arcPointType="false" id="1" xCoord="546" yCoord="389"/>
+    </arc>
+    <arc id="A37" inscription="[35,inf)" nameOffsetX="0" nameOffsetY="0" source="P_timer_3" target="T_overdue_3" type="timed" weight="1">
+      <hlinscription>
+        <text>1'air</text>
+        <structure>
+          <numberof>
+            <subterm>
+              <numberconstant value="1">
+                <positive/>
+              </numberconstant>
+            </subterm>
+            <subterm>
+              <variable refvariable="air"/>
+            </subterm>
+          </numberof>
+        </structure>
+      </hlinscription>
+      <arcpath arcPointType="false" id="0" xCoord="706" yCoord="1201"/>
+      <arcpath arcPointType="false" id="1" xCoord="1030" yCoord="1201"/>
+    </arc>
+    <arc id="A38" inscription="1" nameOffsetX="0" nameOffsetY="0" source="T_overdue_3" target="P_overdue_3" type="normal" weight="1">
+      <hlinscription>
+        <text>1'air</text>
+        <structure>
+          <numberof>
+            <subterm>
+              <numberconstant value="1">
+                <positive/>
+              </numberconstant>
+            </subterm>
+            <subterm>
+              <variable refvariable="air"/>
+            </subterm>
+          </numberof>
+        </structure>
+      </hlinscription>
+      <arcpath arcPointType="false" id="0" xCoord="1040" yCoord="1201"/>
+      <arcpath arcPointType="false" id="1" xCoord="1201" yCoord="1201"/>
+    </arc>
+    <arc id="A39" inscription="[30,60]" nameOffsetX="0" nameOffsetY="0" source="P_timer_4" target="T_maint_4" type="timed" weight="1">
+      <hlinscription>
+        <text>1'air</text>
+        <structure>
+          <numberof>
+            <subterm>
+              <numberconstant value="1">
+                <positive/>
+              </numberconstant>
+            </subterm>
+            <subterm>
+              <variable refvariable="air"/>
+            </subterm>
+          </numberof>
+        </structure>
+      </hlinscription>
+      <arcpath arcPointType="false" id="0" xCoord="643" yCoord="1656"/>
+      <arcpath arcPointType="false" id="1" xCoord="775" yCoord="1561"/>
+    </arc>
+    <arc id="A40" inscription="[0,inf)" nameOffsetX="0" nameOffsetY="0" source="P_bay" target="T_maint_4" type="timed" weight="1">
+      <hlinscription>
+        <text>1'air</text>
+        <structure>
+          <numberof>
+            <subterm>
+              <numberconstant value="1">
+                <positive/>
+              </numberconstant>
+            </subterm>
+            <subterm>
+              <variable refvariable="air"/>
+            </subterm>
+          </numberof>
+        </structure>
+      </hlinscription>
+      <arcpath arcPointType="false" id="0" xCoord="544" yCoord="390"/>
+      <arcpath arcPointType="false" id="1" xCoord="781" yCoord="1545"/>
+    </arc>
+    <arc id="A41" inscription="[0,inf)" nameOffsetX="0" nameOffsetY="0" source="P_crew" target="T_maint_4" type="timed" weight="1">
+      <hlinscription>
+        <text>1'dot.all</text>
+        <structure>
+          <numberof>
+            <subterm>
+              <numberconstant value="1">
+                <positive/>
+              </numberconstant>
+            </subterm>
+            <subterm>
+              <all>
+                <usersort declaration="dot"/>
+              </all>
+            </subterm>
+          </numberof>
+        </structure>
+      </hlinscription>
+      <arcpath arcPointType="false" id="0" xCoord="1611" yCoord="522"/>
+      <arcpath arcPointType="false" id="1" xCoord="786" yCoord="1556"/>
+    </arc>
+    <arc id="A42" inscription="1" nameOffsetX="0" nameOffsetY="0" source="T_maint_4" target="P_inter_4" type="normal" weight="1">
+      <hlinscription>
+        <text>1'air</text>
+        <structure>
+          <numberof>
+            <subterm>
+              <numberconstant value="1">
+                <positive/>
+              </numberconstant>
+            </subterm>
+            <subterm>
+              <variable refvariable="air"/>
+            </subterm>
+          </numberof>
+        </structure>
+      </hlinscription>
+      <arcpath arcPointType="false" id="0" xCoord="781" yCoord="1545"/>
+      <arcpath arcPointType="false" id="1" xCoord="781" yCoord="1486"/>
+    </arc>
+    <arc id="A43" inscription="1" nameOffsetX="0" nameOffsetY="0" source="T_maint_4" target="P_count_4" type="normal" weight="1">
+      <hlinscription>
+        <text>1'air</text>
+        <structure>
+          <numberof>
+            <subterm>
+              <numberconstant value="1">
+                <positive/>
+              </numberconstant>
+            </subterm>
+            <subterm>
+              <variable refvariable="air"/>
+            </subterm>
+          </numberof>
+        </structure>
+      </hlinscription>
+      <arcpath arcPointType="false" id="0" xCoord="785" yCoord="1566"/>
+      <arcpath arcPointType="false" id="1" xCoord="977" yCoord="1477"/>
+    </arc>
+    <arc id="A44" inscription="[0,inf)" nameOffsetX="0" nameOffsetY="0" source="P_inter_4" target="T_return_4" type="timed" weight="1">
+      <hlinscription>
+        <text>1'air</text>
+        <structure>
+          <numberof>
+            <subterm>
+              <numberconstant value="1">
+                <positive/>
+              </numberconstant>
+            </subterm>
+            <subterm>
+              <variable refvariable="air"/>
+            </subterm>
+          </numberof>
+        </structure>
+      </hlinscription>
+      <arcpath arcPointType="false" id="0" xCoord="766" yCoord="1466"/>
+      <arcpath arcPointType="false" id="1" xCoord="571" yCoord="1411"/>
+    </arc>
+    <arc id="A45" inscription="1" nameOffsetX="0" nameOffsetY="0" source="T_return_4" target="P_timer_4" type="normal" weight="1">
+      <hlinscription>
+        <text>1'air</text>
+        <structure>
+          <numberof>
+            <subterm>
+              <numberconstant value="1">
+                <positive/>
+              </numberconstant>
+            </subterm>
+            <subterm>
+              <variable refvariable="air"/>
+            </subterm>
+          </numberof>
+        </structure>
+      </hlinscription>
+      <arcpath arcPointType="false" id="0" xCoord="556" yCoord="1416"/>
+      <arcpath arcPointType="false" id="1" xCoord="626" yCoord="1651"/>
+    </arc>
+    <arc id="A46" inscription="1" nameOffsetX="0" nameOffsetY="0" source="T_return_4" target="P_crew" type="normal" weight="1">
+      <hlinscription>
+        <text>1'dot.all</text>
+        <structure>
+          <numberof>
+            <subterm>
+              <numberconstant value="1">
+                <positive/>
+              </numberconstant>
+            </subterm>
+            <subterm>
+              <all>
+                <usersort declaration="dot"/>
+              </all>
+            </subterm>
+          </numberof>
+        </structure>
+      </hlinscription>
+      <arcpath arcPointType="false" id="0" xCoord="551" yCoord="1405"/>
+      <arcpath arcPointType="false" id="1" xCoord="1609" yCoord="520"/>
+    </arc>
+    <arc id="A47" inscription="1" nameOffsetX="0" nameOffsetY="0" source="T_return_4" target="P_bay" type="normal" weight="1">
+      <hlinscription>
+        <text>1'air</text>
+        <structure>
+          <numberof>
+            <subterm>
+              <numberconstant value="1">
+                <positive/>
+              </numberconstant>
+            </subterm>
+            <subterm>
+              <variable refvariable="air"/>
+            </subterm>
+          </numberof>
+        </structure>
+      </hlinscription>
+      <arcpath arcPointType="false" id="0" xCoord="561" yCoord="1406"/>
+      <arcpath arcPointType="false" id="1" xCoord="541" yCoord="390"/>
+    </arc>
+    <arc id="A48" inscription="[60,inf)" nameOffsetX="0" nameOffsetY="0" source="P_timer_4" target="T_overdue_4" type="timed" weight="1">
+      <hlinscription>
+        <text>1'air</text>
+        <structure>
+          <numberof>
+            <subterm>
+              <numberconstant value="1">
+                <positive/>
+              </numberconstant>
+            </subterm>
+            <subterm>
+              <variable refvariable="air"/>
+            </subterm>
+          </numberof>
+        </structure>
+      </hlinscription>
+      <arcpath arcPointType="false" id="0" xCoord="645" yCoord="1662"/>
+      <arcpath arcPointType="false" id="1" xCoord="1045" yCoord="1561"/>
+    </arc>
+    <arc id="A49" inscription="1" nameOffsetX="0" nameOffsetY="0" source="T_overdue_4" target="P_overdue_4" type="normal" weight="1">
+      <hlinscription>
+        <text>1'air</text>
+        <structure>
+          <numberof>
+            <subterm>
+              <numberconstant value="1">
+                <positive/>
+              </numberconstant>
+            </subterm>
+            <subterm>
+              <variable refvariable="air"/>
+            </subterm>
+          </numberof>
+        </structure>
+      </hlinscription>
+      <arcpath arcPointType="false" id="0" xCoord="1055" yCoord="1561"/>
+      <arcpath arcPointType="false" id="1" xCoord="1231" yCoord="1561"/>
+    </arc>
+    <arc id="A50" inscription="[3,7]" nameOffsetX="0" nameOffsetY="0" source="P_timer_1" target="T_maint_P12" type="timed" weight="1">
+      <hlinscription>
+        <text>1'air</text>
+        <structure>
+          <numberof>
+            <subterm>
+              <numberconstant value="1">
+                <positive/>
+              </numberconstant>
+            </subterm>
+            <subterm>
+              <variable refvariable="air"/>
+            </subterm>
+          </numberof>
+        </structure>
+      </hlinscription>
+      <arcpath arcPointType="false" id="0" xCoord="626" yCoord="225"/>
+      <arcpath arcPointType="false" id="1" xCoord="511" yCoord="600"/>
+    </arc>
+    <arc id="A51" inscription="[8,18]" nameOffsetX="0" nameOffsetY="0" source="P_timer_2" target="T_maint_P12" type="timed" weight="1">
+      <hlinscription>
+        <text>1'air</text>
+        <structure>
+          <numberof>
+            <subterm>
+              <numberconstant value="1">
+                <positive/>
+              </numberconstant>
+            </subterm>
+            <subterm>
+              <variable refvariable="air"/>
+            </subterm>
+          </numberof>
+        </structure>
+      </hlinscription>
+      <arcpath arcPointType="false" id="0" xCoord="652" yCoord="828"/>
+      <arcpath arcPointType="false" id="1" xCoord="515" yCoord="625"/>
+    </arc>
+    <arc id="A52" inscription="[0,inf)" nameOffsetX="0" nameOffsetY="0" source="P_bay" target="T_maint_P12" type="timed" weight="1">
+      <hlinscription>
+        <text>1'air</text>
+        <structure>
+          <numberof>
+            <subterm>
+              <numberconstant value="1">
+                <positive/>
+              </numberconstant>
+            </subterm>
+            <subterm>
+              <variable refvariable="air"/>
+            </subterm>
+          </numberof>
+        </structure>
+      </hlinscription>
+      <arcpath arcPointType="false" id="0" xCoord="538" yCoord="390"/>
+      <arcpath arcPointType="false" id="1" xCoord="511" yCoord="600"/>
+    </arc>
+    <arc id="A53" inscription="[0,inf)" nameOffsetX="0" nameOffsetY="0" source="P_crew" target="T_maint_P12" type="timed" weight="1">
+      <hlinscription>
+        <text>1'dot.all</text>
+        <structure>
+          <numberof>
+            <subterm>
+              <numberconstant value="1">
+                <positive/>
+              </numberconstant>
+            </subterm>
+            <subterm>
+              <all>
+                <usersort declaration="dot"/>
+              </all>
+            </subterm>
+          </numberof>
+        </structure>
+      </hlinscription>
+      <arcpath arcPointType="false" id="0" xCoord="1606" yCoord="512"/>
+      <arcpath arcPointType="false" id="1" xCoord="516" yCoord="613"/>
+    </arc>
+    <arc id="A54" inscription="1" nameOffsetX="0" nameOffsetY="0" source="T_maint_P12" target="P_inter_P12" type="normal" weight="1">
+      <hlinscription>
+        <text>1'air</text>
+        <structure>
+          <numberof>
+            <subterm>
+              <numberconstant value="1">
+                <positive/>
+              </numberconstant>
+            </subterm>
+            <subterm>
+              <variable refvariable="air"/>
+            </subterm>
+          </numberof>
+        </structure>
+      </hlinscription>
+      <arcpath arcPointType="false" id="0" xCoord="516" yCoord="606"/>
+      <arcpath arcPointType="false" id="1" xCoord="857" yCoord="456"/>
+    </arc>
+    <arc id="A55" inscription="1" nameOffsetX="0" nameOffsetY="0" source="T_maint_P12" target="P_count_1" type="normal" weight="1">
+      <hlinscription>
+        <text>1'air</text>
+        <structure>
+          <numberof>
+            <subterm>
+              <numberconstant value="1">
+                <positive/>
+              </numberconstant>
+            </subterm>
+            <subterm>
+              <variable refvariable="air"/>
+            </subterm>
+          </numberof>
+        </structure>
+      </hlinscription>
+      <arcpath arcPointType="false" id="0" xCoord="511" yCoord="600"/>
+      <arcpath arcPointType="false" id="1" xCoord="510" yCoord="105"/>
+      <arcpath arcPointType="false" id="2" xCoord="1081" yCoord="91"/>
+    </arc>
+    <arc id="A56" inscription="1" nameOffsetX="0" nameOffsetY="0" source="T_maint_P12" target="P_count_2" type="normal" weight="1">
+      <hlinscription>
+        <text>1'air</text>
+        <structure>
+          <numberof>
+            <subterm>
+              <numberconstant value="1">
+                <positive/>
+              </numberconstant>
+            </subterm>
+            <subterm>
+              <variable refvariable="air"/>
+            </subterm>
+          </numberof>
+        </structure>
+      </hlinscription>
+      <arcpath arcPointType="false" id="0" xCoord="515" yCoord="618"/>
+      <arcpath arcPointType="false" id="1" xCoord="765" yCoord="870"/>
+      <arcpath arcPointType="false" id="2" xCoord="858" yCoord="936"/>
+    </arc>
+    <arc id="A57" inscription="1" nameOffsetX="0" nameOffsetY="0" source="T_maint_P12" target="P_count_P12" type="normal" weight="1">
+      <hlinscription>
+        <text>1'air</text>
+        <structure>
+          <numberof>
+            <subterm>
+              <numberconstant value="1">
+                <positive/>
+              </numberconstant>
+            </subterm>
+            <subterm>
+              <variable refvariable="air"/>
+            </subterm>
+          </numberof>
+        </structure>
+      </hlinscription>
+      <arcpath arcPointType="false" id="0" xCoord="511" yCoord="631"/>
+      <arcpath arcPointType="false" id="1" xCoord="511" yCoord="706"/>
+    </arc>
+    <arc id="A58" inscription="[3,3]" nameOffsetX="0" nameOffsetY="0" source="P_inter_P12" target="T_return_P12" type="timed" weight="1">
+      <hlinscription>
+        <text>1'air</text>
+        <structure>
+          <numberof>
+            <subterm>
+              <numberconstant value="1">
+                <positive/>
+              </numberconstant>
+            </subterm>
+            <subterm>
+              <variable refvariable="air"/>
+            </subterm>
+          </numberof>
+        </structure>
+      </hlinscription>
+      <arcpath arcPointType="false" id="0" xCoord="865" yCoord="464"/>
+      <arcpath arcPointType="false" id="1" xCoord="811" yCoord="600"/>
+    </arc>
+    <arc id="A59" inscription="1" nameOffsetX="0" nameOffsetY="0" source="T_return_P12" target="P_timer_1" type="normal" weight="1">
+      <hlinscription>
+        <text>1'air</text>
+        <structure>
+          <numberof>
+            <subterm>
+              <numberconstant value="1">
+                <positive/>
+              </numberconstant>
+            </subterm>
+            <subterm>
+              <variable refvariable="air"/>
+            </subterm>
+          </numberof>
+        </structure>
+      </hlinscription>
+      <arcpath arcPointType="false" id="0" xCoord="811" yCoord="600"/>
+      <arcpath arcPointType="false" id="1" xCoord="637" yCoord="224"/>
+    </arc>
+    <arc id="A60" inscription="1" nameOffsetX="0" nameOffsetY="0" source="T_return_P12" target="P_timer_2" type="normal" weight="1">
+      <hlinscription>
+        <text>1'air</text>
+        <structure>
+          <numberof>
+            <subterm>
+              <numberconstant value="1">
+                <positive/>
+              </numberconstant>
+            </subterm>
+            <subterm>
+              <variable refvariable="air"/>
+            </subterm>
+          </numberof>
+        </structure>
+      </hlinscription>
+      <arcpath arcPointType="false" id="0" xCoord="805" yCoord="621"/>
+      <arcpath arcPointType="false" id="1" xCoord="669" yCoord="828"/>
+    </arc>
+    <arc id="A61" inscription="1" nameOffsetX="0" nameOffsetY="0" source="T_return_P12" target="P_bay" type="normal" weight="1">
+      <hlinscription>
+        <text>1'air</text>
+        <structure>
+          <numberof>
+            <subterm>
+              <numberconstant value="1">
+                <positive/>
+              </numberconstant>
+            </subterm>
+            <subterm>
+              <variable refvariable="air"/>
+            </subterm>
+          </numberof>
+        </structure>
+      </hlinscription>
+      <arcpath arcPointType="false" id="0" xCoord="806" yCoord="611"/>
+      <arcpath arcPointType="false" id="1" xCoord="552" yCoord="385"/>
+    </arc>
+    <arc id="A62" inscription="1" nameOffsetX="0" nameOffsetY="0" source="T_return_P12" target="P_crew" type="normal" weight="1">
+      <hlinscription>
+        <text>1'dot.all</text>
+        <structure>
+          <numberof>
+            <subterm>
+              <numberconstant value="1">
+                <positive/>
+              </numberconstant>
+            </subterm>
+            <subterm>
+              <all>
+                <usersort declaration="dot"/>
+              </all>
+            </subterm>
+          </numberof>
+        </structure>
+      </hlinscription>
+      <arcpath arcPointType="false" id="0" xCoord="815" yCoord="616"/>
+      <arcpath arcPointType="false" id="1" xCoord="1606" yCoord="513"/>
+    </arc>
+  </net>
+  <query active="true" algorithmOption="CERTAIN_ZERO" approximationDenominator="2" capacity="7" colorFixpoint="false" coloredReduction="false" discreteInclusion="false" enableOverApproximation="false" enableUnderApproximation="false" extrapolationOption="AUTOMATIC" gcd="false" hashTableSize="MB_16" inclusionPlaces="*NONE*" name="No overdue violations" overApproximation="false" pTrie="true" partitioning="false" reduction="true" reductionOption="VerifyDTAPN" searchOption="HEURISTIC" symmetricVars="false" symmetry="true" timeDarts="false" traceOption="SOME" type="Default" useQueryReduction="true" useSiphonTrapAnalysis="false" useStubbornReduction="false" useTarOption="false" useTarjan="false">
+    <formula>
+      <exists-path>
+        <globally>
+          <conjunction>
+            <integer-eq>
+              <tokens-count>
+                <place>TAPN1.P_overdue_1</place>
+              </tokens-count>
+              <integer-constant>0</integer-constant>
+            </integer-eq>
+            <integer-eq>
+              <tokens-count>
+                <place>TAPN1.P_overdue_2</place>
+              </tokens-count>
+              <integer-constant>0</integer-constant>
+            </integer-eq>
+            <integer-eq>
+              <tokens-count>
+                <place>TAPN1.P_overdue_3</place>
+              </tokens-count>
+              <integer-constant>0</integer-constant>
+            </integer-eq>
+            <integer-eq>
+              <tokens-count>
+                <place>TAPN1.P_overdue_4</place>
+              </tokens-count>
+              <integer-constant>0</integer-constant>
+            </integer-eq>
+          </conjunction>
+        </globally>
+      </exists-path>
+    </formula>
+  </query>
+  <query active="true" algorithmOption="CERTAIN_ZERO" approximationDenominator="2" capacity="7" colorFixpoint="false" coloredReduction="false" discreteInclusion="false" enableOverApproximation="false" enableUnderApproximation="false" extrapolationOption="AUTOMATIC" gcd="false" hashTableSize="MB_16" inclusionPlaces="*NONE*" name="Project P12 reachable" overApproximation="false" pTrie="true" partitioning="false" reduction="true" reductionOption="VerifyDTAPN" searchOption="HEURISTIC" symmetricVars="false" symmetry="true" timeDarts="false" traceOption="SOME" type="Default" useQueryReduction="true" useSiphonTrapAnalysis="false" useStubbornReduction="false" useTarOption="false" useTarjan="false">
+    <formula>
+      <exists-path>
+        <finally>
+          <integer-gt>
+            <tokens-count>
+              <place>TAPN1.P_count_P12</place>
+            </tokens-count>
+            <integer-constant>0</integer-constant>
+          </integer-gt>
+        </finally>
+      </exists-path>
+    </formula>
+  </query>
+  <feature isColored="true" isGame="false" isStochastic="false" isTimed="true"/>
+</pnml>
