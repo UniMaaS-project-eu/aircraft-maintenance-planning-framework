@@ -2,7 +2,7 @@
 `./install.sh`
 
 # Run:
-`pipeline.py -f test.json` or other file
+`./pipeline.py -f test.json` or other file
 
 OR
 
