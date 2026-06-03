@@ -1,3 +1,4 @@
+#!.venv/bin/python
 try:
     from termcolor import colored as co
 except:
