@@ -102,7 +102,8 @@ def initial_marking(data):
     for idx,plane in enumerate(data["fleet"]):
         printv(f"{idx+1}/{len(data['fleet'])}")
 
-        res[plane["aircraftID"]] = tokenise(plane["aircraftID"],plane["events"],fcpd=plane["fpd"],year_dur=data["sim_days"],p=data["max_projects"],bot=data["blackout-days"],bop=[1 for _ in data["blackout-days"]])
+        if "blackout-durations" in data :res[plane["aircraftID"]] = tokenise(plane["aircraftID"],plane["events"],fcpd=plane["fpd"],year_dur=data["sim_days"],p=data["max_projects"],bot=data["blackout-days"],bop=data["blackout-durations"])
+        else:res[plane["aircraftID"]] = tokenise(plane["aircraftID"],plane["events"],fcpd=plane["fpd"],year_dur=data["sim_days"],p=data["max_projects"],bot=data["blackout-days"],bop=[1 for _ in data["blackout-days"]])
     printv(f'Initial Markings : \n{json.dumps(res, indent=4)}')
     print(co("Done","red"))
     return res
@@ -138,8 +139,8 @@ def alp_tcpn(initial_marking,grouping):
     return rev_times,wps_resc
 
 
-def flp_algo(alts,cap):
-    from Scheduling.FLP.FLP import task,schedule,_solve
+def flp_algo(alts,cap,bo_days):
+    from Scheduling.FLP.FLP import task,schedule,solve
     tasks_list = []
     print(co(f"\n[FLP] Preparing optimal Schedule... ","green"),end = '')
 
@@ -157,18 +158,18 @@ def flp_algo(alts,cap):
             if i['duration'] + i['timestamp'] > timezero :
                 timezero =  i['duration'] + i['timestamp']    
     for plane,i in tasks_list:
-            tasks.append(task(f"{plane}: {i['tasks']}",timezero-(i['timestamp']+i['duration']),i['duration']))
-    schd = schedule(tasks,timezero=timezero)
+            tasks.append(task(f"{plane}: {i['tasks']}",i['timestamp'],i['duration']))
+    schd = schedule(tasks,timezero=timezero,bo=bo_days)
 
 
-    printv("\n  Initial schedule (reverse time)")
+    printv("\n  Initial schedule ")
     if printv():schd.print()
     print(co("Done","red"))
 
     print(co(f"\n[FLP] Running Fleet Level Planning Algorithm... ","green"),end = '')
 
-    _solve(schd,0,cap)
-    printv("\n  Resulting schedule (reverse time)")
+    solve(schd,cap)
+    printv("\n  Resulting schedule ")
     if printv():schd.print()
     print(co("Done","red"))
     return [schd]
@@ -194,7 +195,7 @@ def tracegen_prepv2(sched_l):
             planeid = project.id.split(': ')[0]
             projects = eval(project.id.split(': ')[1])
             duration = project.d
-            date = timezero - project.i - project.d
+            date = project.i 
             for plane in alt["Schedule"]:
                 if planeID2PID(planeid) == plane["PID"]:
                     plane["P"].append(list2tasks(projects))
@@ -246,14 +247,15 @@ def main(filename):
         print(co(f"\n[ALP] TCPN for {pID} ({idx}/{len(data['fleet'])}) ... ","green"),end = '')
         fleet_alt_tcpn_res[pID]=alp_tcpn(initial_markings[pID],groupings[pID]["labeledout"])
         print(co("Done","red"))
-    flp_res = flp_algo(fleet_alt_tcpn_res,data["hangar_capacity"])
-    if printv("Resulting Schedule (correct time)"):
-        flp_rev_res = flp_res.copy()
-        for alt in flp_rev_res:
-            for t in alt.tasks:
-                t.i = alt.timezero - t.i -t.d
-            alt.print()
-    sched_out = tracegen_prepv2(flp_res)
+    if "blackout-durations" in data:
+        bo_days= {i:j for i,j in zip(data["blackout-days"],data["blackout-durations"])}
+    else:bo_days= {i:1 for i in data["blackout-days"]}
+    flp_res = flp_algo(fleet_alt_tcpn_res,data["hangar_capacity"],bo_days)
+   
+    flp_rev_res = flp_res.copy()
+    # if printv():flp_rev_res.print()
+
+    sched_out = tracegen_prepv2(flp_rev_res)
     json.dump(sched_out,open("scheduling_output.json",'w'))
     tracegen_run(sched_out,T_horizon_nominal=data["sim_days"],T_dc=100)
     
