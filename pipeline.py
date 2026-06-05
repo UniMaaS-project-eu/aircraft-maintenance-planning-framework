@@ -153,13 +153,13 @@ def flp_algo(alts,cap,bo_days):
         for i in tmp:
             tasks_list.append((plane,i))
     tasks = []
-    timezero = 0
-    for _,i in tasks_list:
-            if i['duration'] + i['timestamp'] > timezero :
-                timezero =  i['duration'] + i['timestamp']    
+    # timezero = 0
+    # for _,i in tasks_list:
+    #         if i['duration'] + i['timestamp'] > timezero :
+    #             timezero =  i['duration'] + i['timestamp']    
     for plane,i in tasks_list:
             tasks.append(task(f"{plane}: {i['tasks']}",i['timestamp'],i['duration']))
-    schd = schedule(tasks,timezero=timezero,bo=bo_days)
+    schd = schedule(tasks,bo=bo_days)
 
 
     printv("\n  Initial schedule ")
@@ -169,9 +169,10 @@ def flp_algo(alts,cap,bo_days):
     print(co(f"\n[FLP] Running Fleet Level Planning Algorithm... ","green"),end = '')
 
     solve(schd,cap)
-    printv("\n  Resulting schedule ")
-    if printv():schd.print()
+
     print(co("Done","red"))
+    printv("\n  Resulting schedule ")
+    schd.print(bohash=True)
     return [schd]
 
 

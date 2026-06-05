@@ -12,9 +12,9 @@ class task:
         return f"{self.id}"
 
 class schedule:
-    def __init__(self,tasks,timezero = 0,bo={}):
+    def __init__(self,tasks,bo={}):
         self.tasks = tasks
-        self.timezero = timezero
+        self.timezero = self.last_day()
         self.r2sim = {}
         self.sim2r = {}
         self.bo = bo
@@ -82,18 +82,34 @@ class schedule:
                     overlap = min(t.i+t.d,b+self.bo[b])-max(t.i,b)  
 
                 if overlap >0:
-                    t.d += overlap
-    def print(self):
+                    t.d += self.bo[b]
+    def blackoutdays(self):
+        res = []
+        for b in self.bo:
+            for i in range(b,b+self.bo[b]):
+                res.append(i)
+        return res
+    def print(self,bohash=False):
         days = []
         for i in range(self.last_day()):
             days.append(self.day(i))
 
         flag = True
+        task_id_length=max([len(t.id) for t in self.tasks])
         for i,d in enumerate(days):
-            if len(d)!=0 or i in self.bo:
+            if len(d)!=0 or i in self.blackoutdays():
                 flag = True
-                asterisc = f"({self.bo[i]})" if i  in self.bo else ""
-                print( f"{i}{asterisc}", " ".join([f"{x}" if x in d else "     " for x in self.tasks ]))
+                if bohash:
+                    if i in self.blackoutdays():
+                        delimeter  = "="
+                        print( f"{i}", delimeter.join([delimeter*task_id_length for x in self.tasks ]))
+                    
+                    else:
+                        delimeter  = " "
+                        print( f"{i}", delimeter.join([f"{x}" if x in d else delimeter*task_id_length for x in self.tasks ]))
+                else:
+                 delimeter  = f"=" if i  in self.blackoutdays() else " "
+                 print( f"{i}", delimeter.join([f"{x}" if x in d else delimeter*task_id_length for x in self.tasks ]))
             elif flag:
                 print(" ...")
                 flag = False
@@ -131,13 +147,13 @@ def solve(sched,capacity):
 
 if __name__ == "__main__":
     tasks = []
-    for i,(x,y) in enumerate([(25,7),(25,6)]):
+    for i,(x,y) in enumerate([(8,3),(12,4),(15,2)]):
         tasks.append(task(f"task{i}",x,y))
-    schd = schedule(tasks,timezero = 32,bo={21:2,30:1})
+    schd = schedule(tasks,bo={6:2,13:2})
     schd.print()
     print("\n\n")
     solve(schd,1)
 
-    schd.print()
+    schd.print(bohash=True)
 
     
