@@ -6,6 +6,7 @@ except:
         return s
 import json
 VERBOSE = False
+INTER_CLEAN = False
 def printv(*args, **kwargs):
     if VERBOSE:
         print(*args, **kwargs)
@@ -217,7 +218,7 @@ def tracegen_prepv2(sched_l):
     printv(input_json)
     print(co("Done","red"))
     return input_json   
-def tracegen_run(input_json,T_horizon_nominal,T_dc):
+def tracegen_run(input_json,outfile,T_horizon_nominal,T_dc):
     print(co(f"\n[TACPN] Generation TACPN traces... ","green"),end = '')
 
     from TACPN.Trace_generator.trace_gen_zerotimes import DictObject, HandleAlt
@@ -225,7 +226,7 @@ def tracegen_run(input_json,T_horizon_nominal,T_dc):
     for alt in alts:
         printv(f"\n     generating trace for {alt.ID}...",end = '')
         trace = HandleAlt(alt,T_dc,T_horizon_nominal,save=False)
-        with open(f'{alt.ID}.trc','w') as f:
+        with open(f'{outfile}_{alt.ID}.trc','w') as f:
             f.write(trace)
         printv("Done")
     print(co("Done","red"))
@@ -238,7 +239,7 @@ def read_input(filename):
     return data
 
 
-def main(filename):
+def main(filename,outfile):
     data = read_input(args.filename)
     groupings = grouping_algo(data)
     initial_markings = initial_marking(data)
@@ -257,17 +258,26 @@ def main(filename):
     # if printv():flp_rev_res.print()
 
     sched_out = tracegen_prepv2(flp_rev_res)
-    json.dump(sched_out,open("scheduling_output.json",'w'))
-    tracegen_run(sched_out,T_horizon_nominal=data["sim_days"],T_dc=100)
-    
+    json.dump(sched_out,open(f"{outfile}_scheduling_output.json",'w'))
+    tracegen_run(sched_out,outfile,T_horizon_nominal=data["sim_days"],T_dc=100)
+    if not INTER:
+        import os
+        printv("Cleanning intermediate files ...")
+        os.remove("curr_grouping.json")
+        os.remove("dataset_initial_marking.json")
+        printv("Done")
         # print(f'{json.dumps(fleet_alt_tcpn_res, indent=4)}')
 if __name__=="__main__":
     import argparse
     parser = argparse.ArgumentParser()
     parser.add_argument('-f','--filename', help='filename of initial data json',required=True)
     parser.add_argument('-v','--verbose', help='increase output verbosity',action='store_true')
+    parser.add_argument('-i','--intermediate', help='Keep Intermediate Files',action='store_true')
+    parser.add_argument('-o','--outfile', help='Name of Outfile',default="out")
     args = parser.parse_args()
     VERBOSE = args.verbose
-    main(args.filename)
+    INTER = args.intermediate
+
+    main(args.filename,args.outfile)
 
 
