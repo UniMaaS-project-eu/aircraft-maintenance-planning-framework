@@ -29,20 +29,20 @@ def start_trans(global_time,pid,tasks,diff):
     else:
         plane_id = f"__{pid-1}"
     res =f"""
-      <transition id="ComposedModel_T_enter{plane_id}">
-    <token age="{curr_age}" place="ComposedModel_Shared_P_flying__{pid}"/>
-    <token age="0" place="ComposedModel_Shared_P_ground_capacity"/>
+      <transition id="ComposedModel__T_enter{plane_id}">
+    <token age="{curr_age}" place="ComposedModel__Shared__P_flying__{pid}"/>
+    <token age="0" place="ComposedModel__Shared__P_ground_capacity"/>
   </transition>"""
     for t in tasks:
         tid = t[-1]
         res+=f"""
-    <transition id="ComposedModel_T_maint_{tid}{plane_id}">
-    <token age="{global_time}" place="ComposedModel_Shared_P_timer_{tid}__{pid}"/>
-    <token age="0" place="ComposedModel_Shared_P_crew"/>
-    <token age="0" place="ComposedModel_P_bay__{pid}"/>
+    <transition id="ComposedModel__T_maint_{tid}{plane_id}">
+    <token age="{global_time}" place="ComposedModel__Shared__P_timer_{tid}__{pid}"/>
+    <token age="0" place="ComposedModel__Shared__P_crew"/>
+    <token age="0" place="ComposedModel__P_bay__{pid}"/>
     </transition>
-    <transition id="ComposedModel_T_return_{tid}{plane_id}">
-    <token age="0" place="ComposedModel_P_inter_{tid}__{pid}"/>
+    <transition id="ComposedModel__T_return_{tid}{plane_id}">
+    <token age="0" place="ComposedModel__P_inter_{tid}__{pid}"/>
     </transition>"""
         curr_age = 0
     return res
@@ -56,8 +56,8 @@ def end_trans(diff,pid):
     else:
         plane_id = f"__{pid-1}"
     return f"""
-  <transition id="ComposedModel_T_exit{plane_id}">
-    <token age="{diff}" place="ComposedModel_P_bay__{pid}"/>
+  <transition id="ComposedModel__T_exit{plane_id}">
+    <token age="{diff}" place="ComposedModel__P_bay__{pid}"/>
   </transition>"""
 def delay(diff):
     return f"<delay>{diff}</delay>"
