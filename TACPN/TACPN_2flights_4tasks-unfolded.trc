@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<trace>
+  <delay>103</delay>
+  <transition id="ComposedModel__T_enter__0">
+    <token age="103" place="ComposedModel__Shared__P_flying__1"/>
+    <token age="103" place="ComposedModel__Shared__P_ground_capacity"/>
+  </transition>
+  <transition id="ComposedModel__T_maint_1__0">
+    <token age="103" place="ComposedModel__Shared__P_timer_1__1"/>
+    <token age="0" place="ComposedModel__P_bay__1"/>
+    <token age="103" place="ComposedModel__Shared__P_crew"/>
+  </transition>
+  <transition id="ComposedModel__T_return_1__0">
+    <token age="0" place="ComposedModel__P_inter_1__1"/>
+  </transition>
+  <transition id="ComposedModel__T_exit__0">
+    <token age="0" place="ComposedModel__P_bay__1"/>
+  </transition>
+  <transition id="ComposedModel__T_enter">
+    <token age="103" place="ComposedModel__Shared__P_flying__0"/>
+    <token age="0" place="ComposedModel__Shared__P_ground_capacity"/>
+  </transition>
+  <transition id="ComposedModel__T_maint_1">
+    <token age="103" place="ComposedModel__Shared__P_timer_1__0"/>
+    <token age="0" place="ComposedModel__P_bay__0"/>
+    <token age="103" place="ComposedModel__Shared__P_crew"/>
+  </transition>
+  <transition id="ComposedModel__T_return_1">
+    <token age="0" place="ComposedModel__P_inter_1__0"/>
+  </transition>
+  <transition id="ComposedModel__T_maint_2">
+    <token age="103" place="ComposedModel__Shared__P_timer_2__0"/>
+    <token age="0" place="ComposedModel__P_bay__0"/>
+    <token age="103" place="ComposedModel__Shared__P_crew"/>
+  </transition>
+  <transition id="ComposedModel__T_return_2">
+    <token age="0" place="ComposedModel__P_inter_2__0"/>
+  </transition>
+  <transition id="ComposedModel__T_exit">
+    <token age="0" place="ComposedModel__P_bay__0"/>
+  </transition>
+</trace>
