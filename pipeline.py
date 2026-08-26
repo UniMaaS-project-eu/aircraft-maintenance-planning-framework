@@ -17,7 +17,7 @@ def printv(*args, **kwargs):
 
 def grouping_algo(data): # Aircraft-level Task Grouping Algorithn
     from Scheduling.algorithm import algorithm
-    print(co("\n[GROUPING] Grouping Algorithm ... ","green"),end = '')
+    print(co("\n[GROUPING] Grouping Algorithm ... ","blue"),end = '')
     res = {}
 
     printv("\nCalculating Groupings ....")
@@ -101,7 +101,7 @@ def tokenise(ac,tasks,fcpd=1,fhpd=1,years=1,year_dur=365,p=2,bop=[],bot=[]): # C
     return res
 
 def initial_marking(data): # Generates initial marking (tokens) for Aircraft-level Planning TCPN
-    print(co("\n[ALP] Initial Markings generation ... ","green"),end = '')
+    print(co("\n[ALP] Initial Markings generation ... ","blue"),end = '')
     res = {}
     printv("\nCalculating Groupings ....")
     for idx,plane in enumerate(data["fleet"]):
@@ -149,7 +149,7 @@ def alp_tcpn(initial_marking,grouping): # Runs the Aircraft-level Planning TCPN 
 def flp_algo(alts,cap,bo_days): # Flight-level Planning Algorithm
     from Scheduling.FLP import task,schedule,solve
     tasks_list = []
-    print(co(f"\n[FLP] Preparing optimal Schedule... ","green"),end = '')
+    print(co(f"\n[FLP] Preparing optimal Schedule... ","blue"),end = '')
 
     for plane in alts:
         if len(alts[plane]) > 1:
@@ -173,7 +173,7 @@ def flp_algo(alts,cap,bo_days): # Flight-level Planning Algorithm
     if printv():schd.print()
     print(co("Done","red"))
 
-    print(co(f"\n[FLP] Running Fleet Level Planning Algorithm... ","green"),end = '')
+    print(co(f"\n[FLP] Running Fleet Level Planning Algorithm... ","blue"),end = '')
 
     solve(schd,cap)
 
@@ -195,7 +195,7 @@ def planeID2PID(planeID): # Converts TCPN compatible PlaneID to TACPN compatible
     return int(planeID.split("_")[-1])
 
 def tracegen_prepv2(sched_l): # Prepares input for the TACPN trace generation ( Aggregation and JSON serialization) 
-    print(co("\n[TACPN] Preparing schedule for trace generation ...","green"),end = "")
+    print(co("\n[TACPN] Preparing schedule for trace generation ...","blue"),end = "")
     input_json = []
     for idx,sched in enumerate(sched_l):
         alt = {"ID":f"Alt{idx+1}","Schedule":[]}
@@ -228,7 +228,7 @@ def tracegen_prepv2(sched_l): # Prepares input for the TACPN trace generation ( 
     return input_json   
 
 def tracegen_run(input_json,outfile,T_horizon_nominal,T_dc): # Generates TACPN compatible trace 
-    print(co(f"\n[TACPN] Generation TACPN traces... ","green"),end = '')
+    print(co(f"\n[TACPN] Generation TACPN traces... ","blue"),end = '')
 
     from TACPN.Trace_generator.trace_gen_zerotimes import DictObject, HandleAlt
     alts = [DictObject(**alt) for alt in input_json]
@@ -269,7 +269,7 @@ def main(filename,outfile):
     # Run ALP for each aircraft in the Fleet
     for idx,plane in enumerate(data["fleet"]):
         pID = plane["aircraftID"]
-        print(co(f"\n[ALP] TCPN for {pID} ({idx}/{len(data['fleet'])}) ... ","green"),end = '')
+        print(co(f"\n[ALP] TCPN for {pID} ({idx}/{len(data['fleet'])}) ... ","blue"),end = '')
         fleet_alt_tcpn_res[pID]=alp_tcpn(initial_markings[pID],groupings[pID]["labeledout"])
         print(co("Done","red"))
     if "blackout-durations" in data:

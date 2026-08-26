@@ -4,6 +4,7 @@ git clone https://github.com/UniMaaS-project-eu/aircraft-maintenance-planning-fr
 cd aircraft-maintenance-planning-framework
 ./install.sh
 ```
+> For colored output, remove comment from `termcolor` in [requirements.txt](requirements.txt)
 
 # Usage
 ```
