@@ -22,7 +22,7 @@ options:
 
 
 # Example 
-Running tge framework using the [test.json](test.json):
+Running the framework using [test.json](test.json):
 
 `pipeline.py -f test.json -o test`
 
