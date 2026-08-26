@@ -1,4 +1,5 @@
 #!.venv/bin/python
+# ======================= UTIL ===========================
 try:
     from termcolor import colored as co
 except:
@@ -12,7 +13,9 @@ def printv(*args, **kwargs):
         print(*args, **kwargs)
         return True
     return False
-def grouping_algo(data):
+# ======================= Aircraft-Level Planning ===========================
+
+def grouping_algo(data): # Aircraft-level Task Grouping Algorithn
     from Scheduling.algorithm import algorithm
     print(co("\n[GROUPING] Grouping Algorithm ... ","green"),end = '')
     res = {}
@@ -47,7 +50,9 @@ def grouping_algo(data):
     print(co("Done","red"))
     return res
 
-def tokenise(ac,tasks,fcpd=1,fhpd=1,years=1,year_dur=365,p=2,bop=[],bot=[]):
+def tokenise(ac,tasks,fcpd=1,fhpd=1,years=1,year_dur=365,p=2,bop=[],bot=[]): # Create TCPN compatible tokens from input variables
+    # ac := "Plane ID",tasks := "Tasks object",fcpd := "Flight Cycles / day",fhpd := "Flight Hours / day",years := "Number of seasons ",year_dur := "season duration",p := "Number of projects / season",bot := "black-out days (dates)",bop := black-out days (duration)
+
     res  = {}
     res["active_fleet"]= {
         "tokens": [[]],
@@ -94,9 +99,8 @@ def tokenise(ac,tasks,fcpd=1,fhpd=1,years=1,year_dur=365,p=2,bop=[],bot=[]):
         "timestamps": bot
     }
     return res
-# def alp_tcpn_prep(data,fleet_grouping):
-#     for plane in data:
-def initial_marking(data):
+
+def initial_marking(data): # Generates initial marking (tokens) for Aircraft-level Planning TCPN
     print(co("\n[ALP] Initial Markings generation ... ","green"),end = '')
     res = {}
     printv("\nCalculating Groupings ....")
@@ -108,7 +112,8 @@ def initial_marking(data):
     printv(f'Initial Markings : \n{json.dumps(res, indent=4)}')
     print(co("Done","red"))
     return res
-def alp_tcpn(initial_marking,grouping):
+
+def alp_tcpn(initial_marking,grouping): # Runs the Aircraft-level Planning TCPN component for a specific scenario
 
     import subprocess
     pID = ""
@@ -139,8 +144,9 @@ def alp_tcpn(initial_marking,grouping):
 
     return rev_times,wps_resc
 
+# ======================= Fleet-Level Planning ===========================
 
-def flp_algo(alts,cap,bo_days):
+def flp_algo(alts,cap,bo_days): # Flight-level Planning Algorithm
     from Scheduling.FLP import task,schedule,solve
     tasks_list = []
     print(co(f"\n[FLP] Preparing optimal Schedule... ","green"),end = '')
@@ -176,17 +182,19 @@ def flp_algo(alts,cap,bo_days):
     schd.print(bohash=True)
     return [schd]
 
+# ======================= TACPN-Verification : Trace Generation ===========================
 
-def list2tasks(l):
+def list2tasks(l): # Converts boolean lists of task inclusion into lists of included tasks. E.g. [1,0,0,1] -> [t1,t4]
     res = []
     for idx,i in enumerate(l):
         if i ==1:
             res.append(f"t{idx+1}")
     return res
-def planeID2PID(planeID):
+
+def planeID2PID(planeID): # Converts TCPN compatible PlaneID to TACPN compatible PID E.g. A1 -> 1
     return int(planeID.split("_")[-1])
 
-def tracegen_prepv2(sched_l):
+def tracegen_prepv2(sched_l): # Prepares input for the TACPN trace generation ( Aggregation and JSON serialization) 
     print(co("\n[TACPN] Preparing schedule for trace generation ...","green"),end = "")
     input_json = []
     for idx,sched in enumerate(sched_l):
@@ -218,7 +226,8 @@ def tracegen_prepv2(sched_l):
     printv(input_json)
     print(co("Done","red"))
     return input_json   
-def tracegen_run(input_json,outfile,T_horizon_nominal,T_dc):
+
+def tracegen_run(input_json,outfile,T_horizon_nominal,T_dc): # Generates TACPN compatible trace 
     print(co(f"\n[TACPN] Generation TACPN traces... ","green"),end = '')
 
     from TACPN.Trace_generator.trace_gen_zerotimes import DictObject, HandleAlt
@@ -230,20 +239,34 @@ def tracegen_run(input_json,outfile,T_horizon_nominal,T_dc):
             f.write(trace)
         printv("Done")
     print(co("Done","red"))
+    
+# ======================= TACPN-Verification : TACPN Generation ===========================
 
-def read_input(filename):
+def tacpn_prep(): # generates  input JSON file  for TACPN_generator script
+    #TODO
+    pass
+
+def tacpn_generation(): # Generates the corresponding TACPN instance
+    #TODO
+    pass
+
+
+# ======================= Core Pipeline Processes ===========================
+
+def read_input(filename): # Parses initial data from file
     print(co("[Misc] Parsing Data ... ","blue"),end = '')
     data = json.load(open(filename,'r'))
     printv(f"Parsed {filename} : \n {json.dumps(data, indent=4)}")
     print(co("Done","red"))
     return data
 
-
 def main(filename,outfile):
+    # Intialization
     data = read_input(args.filename)
     groupings = grouping_algo(data)
     initial_markings = initial_marking(data)
     fleet_alt_tcpn_res = {}
+    # Run ALP for each aircraft in the Fleet
     for idx,plane in enumerate(data["fleet"]):
         pID = plane["aircraftID"]
         print(co(f"\n[ALP] TCPN for {pID} ({idx}/{len(data['fleet'])}) ... ","green"),end = '')
@@ -252,11 +275,12 @@ def main(filename,outfile):
     if "blackout-durations" in data:
         bo_days= {i:j for i,j in zip(data["blackout-days"],data["blackout-durations"])}
     else:bo_days= {i:1 for i in data["blackout-days"]}
+    # Run FLP for the whole fleet
     flp_res = flp_algo(fleet_alt_tcpn_res,data["hangar_capacity"],bo_days)
    
     flp_rev_res = flp_res.copy()
-    # if printv():flp_rev_res.print()
 
+    # Generate TACPN-Verification Trace 
     sched_out = tracegen_prepv2(flp_rev_res)
     json.dump(sched_out,open(f"{outfile}_scheduling_output.json",'w'))
     tracegen_run(sched_out,outfile,T_horizon_nominal=data["sim_days"],T_dc=100)
@@ -266,7 +290,9 @@ def main(filename,outfile):
         os.remove("curr_grouping.json")
         os.remove("dataset_initial_marking.json")
         printv("Done")
-        # print(f'{json.dumps(fleet_alt_tcpn_res, indent=4)}')
+    # Generate TACPN instance
+    # TODO
+
 if __name__=="__main__":
     import argparse
     parser = argparse.ArgumentParser()
