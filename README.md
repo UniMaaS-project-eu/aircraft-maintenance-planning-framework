@@ -21,6 +21,7 @@ options:
 
 
 # Example 
+Running tge framework using the [test.json](test.json):
 
 `python pipeline.py -f test.json -o test`
 
