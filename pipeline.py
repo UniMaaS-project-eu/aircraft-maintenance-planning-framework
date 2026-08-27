@@ -242,13 +242,66 @@ def tracegen_run(input_json,outfile,T_horizon_nominal,T_dc): # Generates TACPN c
     
 # ======================= TACPN-Verification : TACPN Generation ===========================
 
-def tacpn_prep(): # generates  input JSON file  for TACPN_generator script
-    #TODO
-    pass
+def tacpn_prep(aircrafts,tasks,data,T_dc=100,crew_count=100,): # generates  input JSON file  for TACPN_generator script
+    print(co("\n[TACPN] Preparing Model config file ...","blue"),end = "")
+    
+    res = {}
+    # printv(data)
+    aircrafts = [f"A{planeID2PID(a['aircraftID'])}" for a in data["fleet"]]
+    lifespan= T_dc + data["sim_days"]
+    res_tasks = []
+    for t in range(1,tasks+1):
+        task = {}
+        task["guard"]=[T_dc,lifespan]
+        task["timer_invariants"] = {}
+        for idx,a in enumerate(data["fleet"]):
+            for event in a["events"]:
+                if int(''.join(filter(str.isdigit, event["taskID"]))) == t:
+                    task["timer_invariants"][f"A{planeID2PID(a['aircraftID'])}"] = event["max_util"] - event["curr_util"] + T_dc
 
-def tacpn_generation(): # Generates the corresponding TACPN instance
-    #TODO
-    pass
+        res_tasks.append(task)
+    res["aircraft"] = aircrafts
+    res["flying_invariants"]={i:lifespan for i in aircrafts}
+    res["tasks"] = res_tasks    
+    res["crew_count"] = crew_count
+    res["hangar_count"] = data["hangar_capacity"]
+    res["lifespan"] = lifespan
+    printv(res)
+    print(co("Done","red"))
+    
+    return res
+
+def tacpn_generation(config,prefix=None): # Generates the corresponding TACPN instance
+    print(co("\n[TACPN] Generating TAPN ...","blue"),end = "")
+    
+    from TACPN.TACPN_generator.tacpn_generator_aegean import TACPNGenerator
+    
+    gen = TACPNGenerator(config)
+    xml = gen.generate()
+
+    # Determine output filename
+    n_ac = len(config["aircraft"])
+    n_tasks = len(config["tasks"])
+    outfile = f"TACPN_{n_ac}flights_{n_tasks}tasks.tapn" if prefix is None else f"{prefix}_TACPN.tapn"
+
+    with open(outfile, "w", encoding="utf-8") as f:
+        f.write(xml)
+
+    printv(f"Generated: {outfile}")
+    printv(f"  Aircraft: {n_ac}  ({', '.join(config['aircraft'])})")
+    printv(f"  Tasks: {n_tasks}")
+    printv(f"  Crew: {config['crew_count']}, Hangars: {config['hangar_count']}")
+    printv(f"  Lifespan: {config['lifespan']}")
+    printv(f"  Entry guard (auto): [{gen.entry_guard_lo}, {gen.entry_guard_hi}]")
+    for i, t in enumerate(config["tasks"]):
+        inv_str = ", ".join(
+            f"{ac}≤{t['timer_invariants'][ac]}" for ac in config["aircraft"]
+        )
+        printv(f"  Task {i+1}: guard={t['guard']}, timer_inv=[{inv_str}], "
+              f"inter_inv={t['_inter_inv']}, overdue_inv={t['_overdue_inv']}")
+    print(co("Done","red"))
+
+    return outfile
 
 
 # ======================= Core Pipeline Processes ===========================
@@ -280,30 +333,45 @@ def main(filename,outfile):
    
     flp_rev_res = flp_res.copy()
 
+    # Generate TACPN instance
+    tacpn_config = tacpn_prep(aircrafts=2,tasks=4,T_dc=100,data=data)
+    tapn_file = tacpn_generation(tacpn_config,prefix = outfile)
+
+
     # Generate TACPN-Verification Trace 
     sched_out = tracegen_prepv2(flp_rev_res)
     json.dump(sched_out,open(f"{outfile}_scheduling_output.json",'w'))
     tracegen_run(sched_out,outfile,T_horizon_nominal=data["sim_days"],T_dc=100)
+
+
+
     if not INTER:
         import os
         printv("Cleanning intermediate files ...")
         os.remove("curr_grouping.json")
         os.remove("dataset_initial_marking.json")
         printv("Done")
-    # Generate TACPN instance
-    # TODO
-
+    return tapn_file
 if __name__=="__main__":
     import argparse
     parser = argparse.ArgumentParser()
-    parser.add_argument('-f','--filename', help='filename of initial data json',required=True)
+    parser.add_argument('-f','--filename', help='file containing initial data (e.g. test.json)',required=True)
+    parser.add_argument('-o','--outfile', help='prefix for output files (defaults to \'out\')',default="out")
+    parser.add_argument('-i','--intermediate', help='keep intermediate output files',action='store_true')
+    parser.add_argument('-t','--tapaal', help='launch tapaal at the end of the pipeline',action='store_true')
     parser.add_argument('-v','--verbose', help='increase output verbosity',action='store_true')
-    parser.add_argument('-i','--intermediate', help='Keep Intermediate Files',action='store_true')
-    parser.add_argument('-o','--outfile', help='Name of Outfile',default="out")
     args = parser.parse_args()
     VERBOSE = args.verbose
     INTER = args.intermediate
 
-    main(args.filename,args.outfile)
+    tapn_file = main(args.filename,args.outfile)
 
+    if args.tapaal:
+
+        print(f"Running {tapn_file} in TAPAAL .... ")
+        from os import system
+        if system(f"tapaal {tapn_file}") != 0:
+              print(co("Error loading TAPAAL","red")) 
+              exit (1)
+        print (co("Done","red"))
 

@@ -11,11 +11,12 @@ cd aircraft-maintenance-planning-framework
 usage: pipeline.py [-h] -f FILENAME [-v] [-i] [-o OUTFILE]
 
 options:
+  -h, --help            show this help message and exit
   -f FILENAME, --filename FILENAME  file containing initial data (e.g. test.json)
   -o OUTFILE, --outfile OUTFILE     prefix for output files (defaults to 'out')
-  -i, --intermediate    Keep Intermediate output files 
+  -i, --intermediate    Keep Intermediate output files
+  -t, --tapaal          launch tapaal at the end of the pipeline 
   -v, --verbose         increase output verbosity
-  -h, --help            show this help message and exit
 
 ```
 > note: In case of errors make sure that you use the included virtual environment (`source .venv/bin/activate`)
