@@ -23,9 +23,9 @@ options:
 
 
 # Example 
-Running the framework using [test.json](test.json):
+Running the framework using [an example scenario](examples/test.json):
 
-`pipeline.py -f test.json -o test`
+`pipeline.py -f examples/test.json -o test`
 
 
 ```

@@ -242,11 +242,12 @@ def tracegen_run(input_json,outfile,T_horizon_nominal,T_dc): # Generates TACPN c
     
 # ======================= TACPN-Verification : TACPN Generation ===========================
 
-def tacpn_prep(aircrafts,tasks,data,T_dc=100,crew_count=100,): # generates  input JSON file  for TACPN_generator script
+def tacpn_prep(data,T_dc=100,crew_count=100,): # generates  input JSON file  for TACPN_generator script
     print(co("\n[TACPN] Preparing Model config file ...","blue"),end = "")
     
     res = {}
     # printv(data)
+    tasks = max([len(i["events"]) for i in data["fleet"]])
     aircrafts = [f"A{planeID2PID(a['aircraftID'])}" for a in data["fleet"]]
     lifespan= T_dc + data["sim_days"]
     res_tasks = []
@@ -334,7 +335,7 @@ def main(filename,outfile):
     flp_rev_res = flp_res.copy()
 
     # Generate TACPN instance
-    tacpn_config = tacpn_prep(aircrafts=2,tasks=4,T_dc=100,data=data)
+    tacpn_config = tacpn_prep(data=data,T_dc=100)
     tapn_file = tacpn_generation(tacpn_config,prefix = outfile)
 
 

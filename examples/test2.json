@@ -1,0 +1,72 @@
+{
+    "fleet": [{
+            "aircraftID": "plane_1",
+            "events": [{
+                    "taskID": "task1",
+                    "max_util": 12,
+                    "curr_util": 0,
+                    "importance": 1,
+                    "duration": 2
+                },
+                {
+                    "taskID": "task2",
+                    "max_util": 18,
+                    "curr_util": 0,
+                    "importance": 1,
+                    "duration": 1
+
+                }
+            ],
+            "fpd": 1
+
+        },
+        {
+            "aircraftID": "plane_2",
+            "events": [{
+                    "taskID": "task1",
+                    "max_util": 24,
+                    "curr_util": 11,
+                    "importance": 1,
+                    "duration": 2
+
+                },
+                {
+                    "taskID": "task2",
+                    "max_util": 40,
+                    "curr_util": 20,
+                    "importance": 1,
+                    "duration": 1
+
+                }
+            ],
+            "fpd": 1
+        },
+        {
+            "aircraftID": "plane_3",
+            "events": [{
+                    "taskID": "task1",
+                    "max_util": 56,
+                    "curr_util": 40,
+                    "importance": 1,
+                    "duration": 2
+
+                },
+                {
+                    "taskID": "task2",
+                    "max_util": 50,
+                    "curr_util": 30,
+                    "importance": 1,
+                    "duration": 1
+
+                }
+            ],
+            "fpd": 1
+        }
+    ],
+    "blackout-days": [],
+    "max_projects": 2,
+    "hangar_capacity": 1,
+    "sim_days": 25,
+    "threshold": 1
+
+}
