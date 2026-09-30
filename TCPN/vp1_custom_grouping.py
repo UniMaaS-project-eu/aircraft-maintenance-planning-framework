@@ -108,7 +108,7 @@ def expire(a,s):
     return any([th_error(i,j) for i,j in zip(a,s)])
 
 def Duration(th,d):
-    return  sum([i*j for i,j in zip(th,d)])
+    return  max([i*j for i,j in zip(th,d)])
 """
 context = EvaluationContext(user_code=user_code)
 
@@ -417,7 +417,7 @@ if args.mode == "sim":
     while (prev_clock != marking.global_clock):
         prev_clock = marking.global_clock
         if args.verbose:print("\n\n")
-        print([i.name for i in cpn.transitions if cpn.is_enabled(i,marking,context)])
+        print(prev_clock,[i.name for i in cpn.transitions if cpn.is_enabled(i,marking,context)])
         sequeun(cpn,marking,context)
         
     if not args.quiet:

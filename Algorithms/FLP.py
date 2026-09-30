@@ -1,9 +1,10 @@
 class task:
-    def __init__(self,name,s,d):
+    def __init__(self,name,s,d,mapping):
         self.id = name
-        self.s = s
-        self.d = d 
-        self.i = s 
+        self.s = int(s)
+        self.d = int(d) 
+        self.i = int(s) 
+        self.map = mapping
     def schedule(self,i):
         self.i = i 
     def delay(self,x):
@@ -50,7 +51,7 @@ class schedule:
         for task in self.tasks:
             if task.i + task.d > max_d:
                 max_d = task.i + task.d
-        return max_d
+        return int(max_d)
     def day(self,d):
         res = []
         for task in self.tasks:
@@ -95,6 +96,7 @@ class schedule:
             days.append(self.day(i))
 
         flag = True
+        print(self.tasks)
         task_id_length=max([len(t.id) for t in self.tasks])
         for i,d in enumerate(days):
             if len(d)!=0 or i in self.blackoutdays():
@@ -145,15 +147,104 @@ def solve(sched,capacity):
     sched.restore()
     sched.apply_delays()
 
-if __name__ == "__main__":
+def flp_algo(alts,cap,bo_days): # Flight-level Planning Algorithm
+    tasks_list = []
+
+    for plane in alts:
+        if len(alts[plane]) > 1:
+            print("multiple alts selecting first")
+
+        if len( alts[plane]) == 0 :
+            continue
+        tcpn = alts[plane][0]
+        tmp=tcpn["wps"].copy()
+
+        for i in tmp:
+            tasks_list.append((plane,i))
     tasks = []
-    for i,(x,y) in enumerate([(8,3),(12,4),(15,2)]):
-        tasks.append(task(f"task{i}",x,y))
-    schd = schedule(tasks,bo={6:2,13:2})
-    schd.print()
-    print("\n\n")
-    solve(schd,1)
+    if len(tasks_list) == 0:
+        return [None]
+    # timezero = 0
+    # for _,i in tasks_list:
+    #         if i['duration'] + i['timestamp'] > timezero :
+    #             timezero =  i['duration'] + i['timestamp']    
+    for plane,i in tasks_list:
+            tasks.append(task(f"{plane}: {i['tasks']}",i['timestamp'],i['duration'],i['map']))
+    # print(tasks)
+    schd = schedule(tasks,bo=bo_days)
 
-    schd.print(bohash=True)
+    # if printv():schd.print()
 
-    
+    solve(schd,cap)
+
+    # schd.print(bohash=True)
+    return schd
+def list2tasks(l,map=None): # Converts boolean lists of task inclusion into lists of included tasks. E.g. [1,0,0,1] -> [t1,t4]
+    res = []
+    for idx,i in enumerate(l):
+        if i ==1:
+            if map:
+                res.append(map[idx])
+            else:
+                res.append(f"t{idx+1}")
+    return res
+def tracegen_prepv2(sched): # Prepares input for the TACPN trace generation ( Aggregation and JSON serialization) 
+# def tracegen_prepv2(sched_l): # Prepares input for the TACPN trace generation ( Aggregation and JSON serialization) 
+    # input_json = []
+    # for idx,sched in enumerate(sched_l):
+        # alt = {"ID":f"Alt{idx+1}","Schedule":[]}
+        alt = {"Schedule":[]}
+        timezero = sched.timezero
+        for project in sched.tasks:
+            flag = False
+            planeid = project.id.split(': ')[0]
+            projects = eval(project.id.split(': ')[1])
+            duration = project.d
+            date = project.i 
+            for plane in alt["Schedule"]:
+                if planeid == plane["PID"]:
+                    plane["P"].append(list2tasks(projects,project.map))
+                    plane["T"].append(date)
+                    plane["D"].append(duration)
+                    flag = True
+                    break
+            if not flag:
+                alt["Schedule"].append({
+                    "PID" : planeid,
+                    "P":[list2tasks(projects,project.map)],
+                    "T":[date],
+                    "D":[duration]   
+
+                })
+    #     input_json.append(alt)
+    # return input_json   
+        return alt
+if __name__ == "__main__":
+    import json
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-f','--filename', help='file containing alp result for fleet (e.g. output of alp.py)',required=True)
+    parser.add_argument('-d','--data', help='file containing initial data (e.g. test.json): used ONLY for hangar capacity and blackout days')
+    parser.add_argument('-c','--capacity', help='capacity : overrides value set in data file if provided',type=int)
+    parser.add_argument('-b','--blackout_days', help='blackout-days provided either as list (e.g. [1,23,24, 35]) or data-duration pairs (e.g. {"1":1, "23":2, "35":1})')
+
+    parser.add_argument('-o','--outfile', help='prefix for output file (defaults to \'out\')',default="out")
+    args = parser.parse_args()
+    bo_days = {}
+    capacity = 1
+    if args.data:
+        data = json.load(open(args.data,'r'))
+        if "blackout-durations" in data:
+            bo_days= {i:j for i,j in zip(data["blackout-days"],data["blackout-durations"])}
+        else:bo_days= {i:1 for i in data["blackout-days"]}
+        capacity = data["hangar_capacity"]
+    if blackout_days := args.blackout_days:
+        bos = json.loads(blackout_days)
+        if type(bos) == list:
+            bo_days= {i:1 for i in bos}
+        if type(bos) == dict:
+            bo_days = {int(i):j for i,j in bos.items()}
+    if args.capacity :
+        capacity = args.capacity
+    alts = json.load(open(args.filename,'r'))
+    json.dump(tracegen_prepv2(flp_algo(alts,capacity,bo_days)),open(args.outfile+"_flp_schedule.json",'w'),indent=4)

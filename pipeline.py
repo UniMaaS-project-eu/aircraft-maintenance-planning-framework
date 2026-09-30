@@ -29,6 +29,7 @@ def grouping_algo(data): # Aircraft-level Task Grouping Algorithn
         ld = [t["duration"]for t in plane["events"]]
         w = [t["importance"] for t in plane["events"]]
         x,imp,labels,durations = a,w,la,ld #TODO
+        durations = [max(1,int(i)) for i in durations]
         if len(x) == 0 :
             print("skip")
             continue
@@ -154,18 +155,25 @@ def flp_algo(alts,cap,bo_days): # Flight-level Planning Algorithm
     for plane in alts:
         if len(alts[plane]) > 1:
             printv("multiple alts selecting first")
+        if len( alts[plane]) == 0 :
+            continue
         tcpn = alts[plane][0]
         tmp=tcpn["wps"].copy()
 
         for i in tmp:
             tasks_list.append((plane,i))
     tasks = []
+    if len(tasks_list) == 0:
+        print("No maintenance events in this horison. abort")
+        return [None]
+    printv(tasks_list)
     # timezero = 0
     # for _,i in tasks_list:
     #         if i['duration'] + i['timestamp'] > timezero :
     #             timezero =  i['duration'] + i['timestamp']    
     for plane,i in tasks_list:
             tasks.append(task(f"{plane}: {i['tasks']}",i['timestamp'],i['duration']))
+    print(tasks)
     schd = schedule(tasks,bo=bo_days)
 
 
@@ -191,8 +199,8 @@ def list2tasks(l): # Converts boolean lists of task inclusion into lists of incl
             res.append(f"t{idx+1}")
     return res
 
-def planeID2PID(planeID): # Converts TCPN compatible PlaneID to TACPN compatible PID E.g. A1 -> 1
-    return int(planeID.split("_")[-1])
+def planeID2PID(planeID,separator="_"): # Converts TCPN compatible PlaneID to TACPN compatible PID E.g. A1 -> 1
+    return planeID.replace('-','_')
 
 def tracegen_prepv2(sched_l): # Prepares input for the TACPN trace generation ( Aggregation and JSON serialization) 
     print(co("\n[TACPN] Preparing schedule for trace generation ...","blue"),end = "")
@@ -248,7 +256,7 @@ def tacpn_prep(data,T_dc=100,crew_count=100,): # generates  input JSON file  for
     res = {}
     # printv(data)
     tasks = max([len(i["events"]) for i in data["fleet"]])
-    aircrafts = [f"A{planeID2PID(a['aircraftID'])}" for a in data["fleet"]]
+    aircrafts = [f"{planeID2PID(a['aircraftID'])}" for a in data["fleet"]]
     lifespan= T_dc + data["sim_days"]
     res_tasks = []
     for t in range(1,tasks+1):
@@ -257,9 +265,12 @@ def tacpn_prep(data,T_dc=100,crew_count=100,): # generates  input JSON file  for
         task["timer_invariants"] = {}
         for idx,a in enumerate(data["fleet"]):
             for event in a["events"]:
-                if int(''.join(filter(str.isdigit, event["taskID"]))) == t:
-                    task["timer_invariants"][f"A{planeID2PID(a['aircraftID'])}"] = event["max_util"] - event["curr_util"] + T_dc
-
+                if int(''.join(filter(str.isdigit, event["taskID"]))) == t and event["max_util"] - event["curr_util"]>=0:
+                    if int(event["max_util"] - event["curr_util"] + T_dc)<T_dc:
+                        print(f"{event['max_util']} - {event['curr_util']} + {T_dc} = {int(event['max_util'] - event['curr_util'] + T_dc)} < {T_dc}")
+                    task["timer_invariants"][f"{planeID2PID(a['aircraftID'])}"] = int(event["max_util"] - event["curr_util"] + T_dc)
+                else:
+                    task["timer_invariants"][f"{planeID2PID(a['aircraftID'])}"]= lifespan #probably
         res_tasks.append(task)
     res["aircraft"] = aircrafts
     res["flying_invariants"]={i:lifespan for i in aircrafts}
@@ -298,8 +309,8 @@ def tacpn_generation(config,prefix=None): # Generates the corresponding TACPN in
         inv_str = ", ".join(
             f"{ac}≤{t['timer_invariants'][ac]}" for ac in config["aircraft"]
         )
-        printv(f"  Task {i+1}: guard={t['guard']}, timer_inv=[{inv_str}], "
-              f"inter_inv={t['_inter_inv']}, overdue_inv={t['_overdue_inv']}")
+        # printv(f"  Task {i+1}: guard={t['guard']}, timer_inv=[{inv_str}], "
+        #       f"inter_inv={t['_inter_inv']}, overdue_inv={t['_overdue_inv']}")
     print(co("Done","red"))
 
     return outfile
@@ -324,8 +335,12 @@ def main(filename,outfile):
     for idx,plane in enumerate(data["fleet"]):
         pID = plane["aircraftID"]
         print(co(f"\n[ALP] TCPN for {pID} ({idx}/{len(data['fleet'])}) ... ","blue"),end = '')
-        fleet_alt_tcpn_res[pID]=alp_tcpn(initial_markings[pID],groupings[pID]["labeledout"])
-        print(co("Done","red"))
+        alp_res = alp_tcpn(initial_markings[pID],groupings[pID]["labeledout"])
+        if len(alp_res)!=0:
+            fleet_alt_tcpn_res[pID]=alp_res
+            print(co("Done","red"))
+        else:print(co("No schd","red"))
+        
     if "blackout-durations" in data:
         bo_days= {i:j for i,j in zip(data["blackout-days"],data["blackout-durations"])}
     else:bo_days= {i:1 for i in data["blackout-days"]}
@@ -333,17 +348,29 @@ def main(filename,outfile):
     flp_res = flp_algo(fleet_alt_tcpn_res,data["hangar_capacity"],bo_days)
    
     flp_rev_res = flp_res.copy()
-
+    tapn_file = None
     # Generate TACPN instance
-    tacpn_config = tacpn_prep(data=data,T_dc=100)
+    # try:
+    # prune data:
+    data_pruned = data.copy()
+    fleet_pruned = []
+    for ac in data["fleet"]:
+        if ac["aircraftID"] in fleet_alt_tcpn_res:
+            fleet_pruned.append(ac)
+    data_pruned["fleet"]=fleet_pruned
+    json.dump(data_pruned,open("dataset_prunned",'w'), indent=4)
+    
+    tacpn_config = tacpn_prep(data=data_pruned,T_dc=100)
     tapn_file = tacpn_generation(tacpn_config,prefix = outfile)
-
-
-    # Generate TACPN-Verification Trace 
-    sched_out = tracegen_prepv2(flp_rev_res)
-    json.dump(sched_out,open(f"{outfile}_scheduling_output.json",'w'))
-    tracegen_run(sched_out,outfile,T_horizon_nominal=data["sim_days"],T_dc=100)
-
+    # except:
+    #     print("ERROR Creating TACPN Instance")
+    try:
+        # Generate TACPN-Verification Trace 
+        sched_out = tracegen_prepv2(flp_rev_res)
+        json.dump(sched_out,open(f"{outfile}_scheduling_output.json",'w'))
+        tracegen_run(sched_out,outfile,T_horizon_nominal=data["sim_days"],T_dc=100)
+    except:
+        print("Trace verification Failed")
 
 
     if not INTER:
