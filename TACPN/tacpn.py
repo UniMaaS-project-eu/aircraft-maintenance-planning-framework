@@ -56,10 +56,10 @@ if __name__ == "__main__":
     import json
     import argparse
     parser = argparse.ArgumentParser()
-    parser.add_argument('-g','--grouping', help='file containing flp schedule (e.g. output of FLP.py)')
+    parser.add_argument('-s','--schedule', help='file containing flp schedule (e.g. output of FLP.py)')
     parser.add_argument('-d','--data', help='file containing initial data (e.g. test.json): used ONLY for hangar capacity and task due dates')
     parser.add_argument('-t','--taskmap', help='taskmap : overrides value set in data file if provided')
-    parser.add_argument('-f','--fleet', help='fleet : overrides value set in grouping file if provided')
+    parser.add_argument('-f','--fleet', help='fleet : overrides value set in schedule file if provided')
     parser.add_argument('-c','--capacity', help='capacity : overrides value set in data file if provided',type=int)
     parser.add_argument('--tdc', help='T_dc',type=int,default=0)
     parser.add_argument('--lifespan', help='capacity : overrides value set in data file if provided',type=int)
@@ -90,15 +90,15 @@ if __name__ == "__main__":
         taskmap = json.load(open(args.taskmap,'r'))
     if not args.fleet:
         fleet = {}
-        if args.grouping:
-            grouping = json.load(open(args.grouping,'r'))
-            for a in grouping:
-                fleet[a] = []
-                for p in grouping[a]["labeledout"]:
-                    fleet[a]+= grouping[a]["labeledout"][p]
+        if args.schedule:
+            schedule = json.load(open(args.schedule,'r'))
+            for a in schedule["Schedule"]:
+                fleet[a["PID"]] = []
+                for p in a["P"]:
+                    fleet[a["PID"]]+= p
         else:
             import sys
-            sys.exit("No grouping or fleet files specified. Check -h ")
+            sys.exit("No schedule or fleet files specified. Check -h ")
     else:
         fleet = json.load(open(args.fleet,'r'))
     res,tasks = tacpn_prep_v2(fleet,taskmap,args.tdc,capacity,lifespan)
