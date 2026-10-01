@@ -8,15 +8,20 @@ cd aircraft-maintenance-planning-framework
 
 # Usage
 ```
-usage: pipeline.py [-h] -f FILENAME [-v] [-i] [-o OUTFILE]
+usage: pipeline.py [-h] -f FILENAME [-o OUTFILE] [--grouping] [--alp] [--flp] [--tacpngen] [--tacpn] [-a]
 
 options:
   -h, --help            show this help message and exit
-  -f FILENAME, --filename FILENAME  file containing initial data (e.g. test.json)
-  -o OUTFILE, --outfile OUTFILE     prefix for output files (defaults to 'out')
-  -i, --intermediate    Keep Intermediate output files
-  -t, --tapaal          launch tapaal at the end of the pipeline 
-  -v, --verbose         increase output verbosity
+  -f FILENAME, --filename FILENAME
+                        file containing initial data (e.g. test.json)
+  -o OUTFILE, --outfile OUTFILE
+                        prefix for output files (defaults to 'out')
+  --grouping            run grouping
+  --alp                 run alp(tcpn)
+  --flp                 run flp
+  --tacpngen            run tacpn config generation
+  --tacpn               run tacpn generation
+  -a, --all             run tacpn generation
 
 ```
 > note: In case of errors make sure that you use the included virtual environment (`source .venv/bin/activate`)
@@ -28,70 +33,184 @@ Running the framework using [an example scenario](examples/test.json):
 `pipeline.py -f examples/test.json -o test`
 
 
-```
-[Misc] Parsing Data ... Done
-
-[GROUPING] Grouping Algorithm ... Done
-
-[ALP] Initial Markings generation ... Done
-
-[ALP] TCPN for aircraft_1 (0/2) ... Done
-
-[ALP] TCPN for aircraft_2 (1/2) ... Done
-
-[FLP] Preparing optimal Schedule... Done
-
-[FLP] Running Fleet Level Planning Algorithm... Done
- ...
-3                                                   aircraft_2: [1, 0, 0, 0]                         
-4 aircraft_1: [1, 1, 0, 0]                                                                           
-5 aircraft_1: [1, 1, 0, 0]                                                                           
- ...
-19                          aircraft_1: [0, 0, 1, 1]                                                  
-20                          aircraft_1: [0, 0, 1, 1]                                                  
-21                          aircraft_1: [0, 0, 1, 1]                                                  
-22                          aircraft_1: [0, 0, 1, 1]                                                  
-23                          aircraft_1: [0, 0, 1, 1]                                                  
-24                          aircraft_1: [0, 0, 1, 1]                                                  
-25                                                                            aircraft_2: [0, 1, 1, 1]
-26                                                                            aircraft_2: [0, 1, 1, 1]
-27                                                                            aircraft_2: [0, 1, 1, 1]
-28                                                                            aircraft_2: [0, 1, 1, 1]
-29                                                                            aircraft_2: [0, 1, 1, 1]
-30 ===================================================================================================
-31                                                                            aircraft_2: [0, 1, 1, 1]
-32                                                                            aircraft_2: [0, 1, 1, 1]
-
-[TACPN] Preparing schedule for trace generation ...Done
-
-[TACPN] Generation TACPN traces... Done
-
-```
-
-Content of `test_scheduling_output.json`:
+Content of `test_grouping.json`:
 ```json
-[{
-    "ID": "Alt1",
-    "Schedule": [{
-        "PID": 1,
-        "P": [
-            ["t1", "t2"],
-            ["t3", "t4"]
+{
+    "aircraft_1": {
+        "split": [
+            4,
+            25
         ],
-        "T": [4, 19],
-        "D": [2, 6]
-    }, {
-        "PID": 2,
-        "P": [
-            ["t1"],
-            ["t2", "t3", "t4"]
+        "cost": 13.0,
+        "labeledout": {
+            "task1": [
+                "task1",
+                "task2"
+            ],
+            "task3": [
+                "task3",
+                "task4"
+            ]
+        }
+    },
+    "aircraft_2": {
+        "split": [
+            3,
+            25
         ],
-        "T": [3, 25],
-        "D": [1, 8]
-    }]
-}]
+        "cost": 28.0,
+        "labeledout": {
+            "task1": [
+                "task1"
+            ],
+            "task3": [
+                "task3",
+                "task2",
+                "task4"
+            ]
+        }
+    }
+}
 ```
 
+Content of `test_fleet_alp_res.json`:
+```json
+{
+    "aircraft_1": [
+        {
+            "wps": [
+                {
+                    "tasks": [1,1,0,0],
+                    "duration": 1,
+                    "timestamp": 4,
+                    "map": [
+                        "task1",
+                        "task2",
+                        "task3",
+                        "task4"
+                    ]
+                },
+                {
+                    "tasks": [0,0,1,1],
+                    "duration": 5,
+                    "timestamp": 25,
+                    "map": [
+                        "task1",
+                        "task2",
+                        "task3",
+                        "task4"
+                    ]
+                }
+            ]
+        }
+    ],
+    "aircraft_2": [
+        {
+            "wps": [
+                {
+                    "tasks": [1,0,0,0],
+                    "duration": 1,
+                    "timestamp": 3,
+                    "map": [
+                        "task1",
+                        "task2",
+                        "task3",
+                        "task4"
+                    ]
+                },
+                {
+                    "tasks": [0,1,1,1],
+                    "duration": 5,
+                    "timestamp": 25,
+                    "map": [
+                        "task1",
+                        "task2",
+                        "task3",
+                        "task4"
+                    ]
+                }
+            ]
+        }
+    ]
+}
+```
+Content of `test_flp_schedule.json`:
+```json
+{
+    "Schedule": [
+        {
+            "PID": "aircraft_1",
+            "P": [
+                ["task1","task2"],
+                ["task3","task4"]
+            ],
+            "T": [4,20],
+            "D": [1,5]
+        },
+        {
+            "PID": "aircraft_2",
+            "P": [
+                ["task1"],
+                ["task2","task3","task4"]
+            ],
+            "T": [3,25],
+            "D": [1,5]
+        }
+    ]
+}
+
+```
+
+Content of `test_tacpn_config.json`:
+```json
+{
+    "aircraft": [
+        "aircraft_1",
+        "aircraft_2"
+    ],
+    "flying_invariants": {
+        "aircraft_1": 45,
+        "aircraft_2": 45
+    },
+    "crew_count": 1,
+    "hangar_count": 1,
+    "lifespan": 45,
+    "tasks": [
+        {
+            "guard": [0,45],
+            "timer_invariants": {
+                "aircraft_1": 4,
+                "aircraft_2": 3
+            }
+        },
+        {
+            "guard": [0,45],
+            "timer_invariants": {
+                "aircraft_1": 12,
+                "aircraft_2": 37
+            }
+        },
+        {
+            "guard": [0,45],
+            "timer_invariants": {
+                "aircraft_1": 25,
+                "aircraft_2": 25
+            }
+        },
+        {
+            "guard": [0,45],
+            "timer_invariants": {
+                "aircraft_1": 30,
+                "aircraft_2": 41
+            }
+        }
+    ]
+}
+```
+
+TACPN trace generation still unter maintenance
+
+<!-- 
 Content of `test_Alt1.trc`:
 ```xml
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
@@ -188,4 +307,4 @@ Content of `test_Alt1.trc`:
   <transition id="ComposedModel__T_exit__0">
     <token age="8" place="ComposedModel__P_bay__1"/>
   </transition></trace>
-```
+``` -->
