@@ -3,7 +3,7 @@
             "aircraftID": "plane_1",
             "events": [{
                     "taskID": "t_1",
-                    "max_util": 12,
+                    "max_util": 13,
                     "curr_util": 0,
                     "importance": 1,
                     "duration": 2
@@ -25,7 +25,7 @@
             "events": [{
                     "taskID": "t_1",
                     "max_util": 24,
-                    "curr_util": 11,
+                    "curr_util": 10,
                     "importance": 1,
                     "duration": 2
 
