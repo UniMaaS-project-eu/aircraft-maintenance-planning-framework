@@ -37,6 +37,7 @@ def tacpn_prep_v2(fleet,taskmap,T_dc=0,capacity=1,lifespan=365,):
     res["crew_count"]=capacity
     res["hangar_count"]=capacity
     res["lifespan"] = lifespan+T_dc
+    res["entry_guard"] = [T_dc,lifespan+T_dc]
     res["tasks"] = []
     for a in fleet:
         res["aircraft"].append(a.replace("-","_"))

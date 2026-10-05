@@ -69,7 +69,7 @@ def HandleAlt(alt,T_dc,T_horizon_nominal,save=True):
     Important_dates_unsorted = set()
     log = {}
     res = ""
-    for p in alt.Schedule:
+    for p in alt["Schedule"]:
         for idx,d in enumerate(p["T"]):
             printv(f"idx = {idx}, d = {d}")
             printv(f"   adding {d+T_dc} in Idu")
@@ -105,17 +105,16 @@ def HandleAlt(alt,T_dc,T_horizon_nominal,save=True):
     res+="</trace>"
     printv(res)
     if save:
-        with open(args.filename.replace('.json',f'_{alt.ID}.trc'),'w') as f:
+        with open(args.filename.replace('.json',f'_trace.trc'),'w') as f:
             f.write(res)
     return res
-def main():
-    alts = [DictObject(**alt) for alt in read_alts(args.filename)]
-    T_horizon_nominal = 45
-    T_dc = 100
-    for alt in alts:
-        print(alt.ID)
-        HandleAlt(alt,T_dc,T_horizon_nominal)
-        print("Done")
+def main(T_dc,T_horizon_nominal):
+    # alts = [DictObject(**alt) for alt in [read_alts(args.filename)]]
+
+
+    alt = read_alts(args.filename)
+    HandleAlt(alt,T_dc,T_horizon_nominal)
+    print("Done")
 if __name__=="__main__":
     parser = argparse.ArgumentParser(
                     prog='Trace Generator',
@@ -124,6 +123,17 @@ if __name__=="__main__":
     parser.add_argument('filename')           # positional argument
     parser.add_argument('-v', '--verbose',
                     action='store_true')  # on/off flag
+    parser.add_argument('-d','--data', help='file containing initial data (e.g. test.json): used ONLY for hangar capacity and task due dates')
+    parser.add_argument('--tdc', help='T_dc',type=int,default=0)
+    parser.add_argument('--lifespan', help='capacity : overrides value set in data file if provided',type=int)
+    parser.add_argument('-o','--outfile', help='prefix for output file (defaults to \'out\')',default="out")
     args = parser.parse_args()
+    lifespan = 365
+    if args.data:
+        data = json.load(open(args.data,'r'))
+        capacity = data["hangar_capacity"]
+        lifespan = data["sim_days"]
+    if args.lifespan :
+        lifespan = args.lifespan
     if args.verbose : VERBOSE = True
-    main()
+    main(args.tdc,lifespan)

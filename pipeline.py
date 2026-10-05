@@ -33,6 +33,13 @@ def tacpn(filename,prefix):
     system(f"python TACPN/TACPN_generator/tacpn_generator_aegean.py {config_file}") 
     # result = run(["python", "TACPN/TACPN_generator/tacpn_generator_aegean.py",config_file],capture_output=True, text=True) 
     # print (result.stderr)  
+def tracegen(filename,prefix):
+    config_file = prefix+"_flp_schedule.json"
+    if not isfile(config_file):
+        flp(filename,prefix)
+    system(f"python TACPN/Trace_generator/trace_gen_zerotimes.py {config_file} -d {filename}") 
+    # result = run(["python", "TACPN/TACPN_generator/tacpn_generator_aegean.py",config_file],capture_output=True, text=True) 
+    # print (result.stderr)  
 
 if __name__ == "__main__":
 
@@ -45,7 +52,8 @@ if __name__ == "__main__":
     parser.add_argument('--flp', help='run flp ',action='store_true')
     parser.add_argument('--tacpngen', help='run tacpn config generation ',action='store_true')
     parser.add_argument('--tacpn', help='run tacpn generation ',action='store_true')
-    parser.add_argument('-a','--all', help='run tacpn generation ',action='store_true')
+    parser.add_argument('--tracegen', help='run tacpn trace generation ',action='store_true')
+    parser.add_argument('-a','--all', help='run whole pipeline ',action='store_true')
     
     args = parser.parse_args()
     if args.grouping:
@@ -56,6 +64,8 @@ if __name__ == "__main__":
         flp(filename=args.filename,prefix=args.outfile)
     if args.tacpngen:
         tacpngen(filename=args.filename,prefix=args.outfile)   
+    if args.tracegen:
+        tracegen(filename=args.filename,prefix=args.outfile)
     if args.tacpn or args.all:
         tacpn(filename=args.filename,prefix=args.outfile)
     
