@@ -74,10 +74,7 @@ def algorithm(c,a,p,w,lc,la,v=False):
 
                 min_lbl.append(j)
                 visitied.append(i)
-        # print("a",c,len(c))
-        # print("la",lc,len(lc))
-        # print("min_key",min_key,len(min_key))
-        # print("min_lbl",min_lbl,len(min_lbl)) 
+
         if v : print("MIN_LBL:",min_lbl)
         projects = (a[0],)+min_key if min_key[0]!=a[0]else min_key
         return projects, combinations_costs[min_key],split2dict(a,min_key,min_lbl,la)
@@ -103,7 +100,6 @@ def grouping_algo(fleet): # Aircraft-level Task Grouping Algorithn
         minx = x_sorted[0]
         important_x = [i for i,j,l in zip(x_sorted,imp_sorted,labels_sorted) if (j>=data["threshold"] or i==minx)]
         important_l = [l for i,j,l in zip(x_sorted,imp_sorted,labels_sorted) if (j>=data["threshold"] or i==minx)]
-        # print(len(important_x))
         if len(important_x) == 0:
             print("Boom not important")
             continue
@@ -128,12 +124,12 @@ def split(l,horison):
     l3 = []
     l1 = []
     l2 = []
-    # print(l)
+    #~print(l)
     l.sort(key=lambda x: x[1])
-    # print ("sort l")
-    # print(l)
+    #~print ("sort l")
+    #~print(l)
     for idx,x in enumerate(l):
-        # print(i,x)
+        # #~print(i,x)
         if not any([i[0] == x[0] for i in l1]):
             l1.append(x)
             continue
@@ -141,22 +137,22 @@ def split(l,horison):
             l2 = l[idx:] 
             break
     wp1_time = l1[0][1]
-    # print("first split")
-    # print(l1)
-    # print(l2)
+    #~print("first split")
+    #~print(l1)
+    #~print(l2)
     for t in l1:
         for x in l2:
             if t[0] == x[0] : x[1]-= (t[1]-wp1_time)
     l2.sort(key=lambda x: x[1])
-    # print("time update")
-    # print(l1)
-    # print(l2)    
+    #~print("time update")
+    #~print(l1)
+    #~print(l2)    
     l3 = [i  for i in l2 if i[1] > horison]
     l2 = [i  for i in l2 if i not in  l3]
-    # print("check horison")
-    # print(l1)
-    # print(l2)
-    # print(l3)
+    #~print("check horison")
+    #~print(l1)
+    #~print(l2)
+    #~print(l3)
 
     
     for t in l2:
@@ -169,10 +165,10 @@ def split(l,horison):
 
     l2 = [i  for i in l2 if i not in  l1]
     
-    # print("move duplicates back to l1")
-    # print(l1)
-    # print(l2)
-    # print(l3)
+    #~print("move duplicates back to l1")
+    #~print(l1)
+    #~print(l2)
+    #~print(l3)
     l2.sort(key=lambda x: x[1])
     l2buff = []
     for t in l3:
@@ -188,7 +184,7 @@ def split(l,horison):
     #         for j in l2:    
     #             if i[0] == j[0]:
     #                 i[1]-= j[1]-wp2_time
-    # print("Recalculating ooh tasks")
+    # #print("Recalculating ooh tasks")
     # print(l1)
     # print(l2)
     # print(l3)
@@ -202,11 +198,11 @@ def split(l,horison):
     l1_tonos = l1.copy()
     l2_tonos = l2.copy()
     l3_tonos = l3.copy()
-    # print("min cost =",min_cost)
+    #~print("min cost =",min_cost)
     for idx,t in enumerate(l1[::-1]):
-        # print(f"task : {t}")
+        #~print(f"task : {t}")
         if any(i[0]==t[0] for i in l2):
-            # print(f" task {t[0]} found in l2. Abort")
+            #~print(f" task {t[0]} found in l2. Abort")
             break # TODO replace with continue and skip element ?
         l1_prop = l1[:-idx-1]
         l2_prop = l2+l1[-idx-1:]
@@ -226,19 +222,19 @@ def split(l,horison):
         l3_prop = [i for i in l3_prop if i not in l2_prop]
         curr_cost = cost(l1_prop,l2_prop)
 
-        # print (f"spliting: l1 = {l1_prop} l2 = {l2_prop} : cost = {curr_cost}")
+        #~print (f"spliting: l1 = {l1_prop} l2 = {l2_prop} : cost = {curr_cost}")
 
         if curr_cost<min_cost:
             min_cost = curr_cost
             l1_tonos ,l2_tonos,l3_tonos= l1_prop,l2_prop,l3_prop
-            # print (f"   Min found :l1 = {l1_tonos} l2 = {l2_tonos} : cost = {min_cost}")
+            #~print (f"   Min found :l1 = {l1_tonos} l2 = {l2_tonos} : cost = {min_cost}")
     l1 = l1_tonos
     l2 = l2_tonos
     l3 = l3_tonos
-    # print("RESULT")
-    # print("l1",l1)
-    # print("l2",l2)
-    # print("l3",l3)
+    #~print("RESULT")
+    #~print("l1",l1)
+    #~print("l2",l2)
+    #~print("l3",l3)
 
     #   if cost (l1,l2) < cost : min = cost, pointer = ti
 
@@ -248,10 +244,10 @@ def split(l,horison):
             for j in l2:    
                 if i[0] == j[0]:
                     i[1]-= j[1]-wp2_time
-    # print("Recalculating ooh tasks")
-    # print(l1)
-    # print(l2)
-    # print(l3)
+    #~print("Recalculating ooh tasks")
+    #~print(l1)
+    #~print(l2)
+    #~print(l3)
 
     return l1,l2,l3
 
@@ -302,6 +298,7 @@ def grouping_algov2(fleet,horison): # Aircraft-level Task Grouping Algorithn
             res[plane["aircraftID"]] = {"split":x,"labeledout":labeledout}
             print()
         else:
+            print(x , labeledout)
             print ("skip")
     return res
 
