@@ -1,4 +1,3 @@
-from __future__ import annotations
 from os import system 
 from os.path import isfile
 
@@ -45,12 +44,11 @@ def tracegen(filename,prefix):
 
 
 def render_gantt(
-    schedule_data: Dict[str, Any],
+    schedule_data,
     title: str = "Schedule",
     height_per_aircraft: int = 55,
     show_task_labels: bool = False,
-    ) -> go.Figure:
-    from typing import Any, Dict
+    ) :
     import plotly.graph_objects as go
     import plotly.colors as pc
     schedule = schedule_data.get("Schedule", [])
