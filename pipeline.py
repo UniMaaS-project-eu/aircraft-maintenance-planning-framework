@@ -1,33 +1,38 @@
-from subprocess import run
+from os import system 
 from os.path import isfile
 def grouping(filename,prefix):
-    result = run(["python", "Algorithms/grouping.py","-f",filename,"-o",prefix],capture_output=True, text=True) 
-    print (result.stderr)
+    system(f"python Algorithms/groupingv2.py -f {filename} -o {prefix}") 
+    # result = run(["python", "Algorithms/groupingv2.py","-f",filename,"-o",prefix],capture_output=True, text=True) 
+    # print (result.stderr)
 
 def alp(filename,prefix):
     grouping_file = prefix+"_grouping.json"
     if not isfile(grouping_file):
         grouping(filename,prefix)
-    result = run(["python", "TCPN/alp.py","-f",filename,"-g",grouping_file,"-o",prefix],capture_output=True, text=True) 
-    print (result.stderr)
+    system(f"python TCPN/alp.py -f {filename} -g {grouping_file} -o {prefix} -i") 
+    # result = run(["python", "TCPN/alp.py","-f",filename,"-g",grouping_file,"-o",prefix],capture_output=True, text=True) 
+    # print (result.stderr)
 def flp(filename,prefix):
     alp_file = prefix+"_fleet_alp_res.json"
     if not isfile(alp_file):
         alp(filename,prefix)
-    result = run(["python", "Algorithms/FLP.py","-f",alp_file,"-d",filename,"-o",prefix],capture_output=True, text=True) 
-    print (result.stderr)
+    system(f"python Algorithms/FLP.py -f {alp_file} -d {filename} -o {prefix}") 
+    # result = run(["python", "Algorithms/FLP.py","-f",alp_file,"-d",filename,"-o",prefix],capture_output=True, text=True) 
+    # print (result.stderr)
 def tacpngen(filename,prefix):
     flp_file = prefix+"_flp_schedule.json"
     if not isfile(flp_file):
         flp(filename,prefix)
-    result = run(["python", "TACPN/tacpn.py","-s",flp_file,"-d",filename,"-o",prefix],capture_output=True, text=True) 
-    print (result.stderr)   
+    system(f"python TACPN/tacpn.py -s {flp_file } -d {filename} -o {prefix}") 
+    # result = run(["python", "TACPN/tacpn.py","-s",flp_file,"-d",filename,"-o",prefix],capture_output=True, text=True) 
+    # print (result.stderr)   
 def tacpn(filename,prefix):
     config_file = prefix+"_tacpn_config.json"
     if not isfile(config_file):
         tacpngen(filename,prefix)
-    result = run(["python", "TACPN/TACPN_generator/tacpn_generator_aegean.py",config_file],capture_output=True, text=True) 
-    print (result.stderr)  
+    system(f"python TACPN/TACPN_generator/tacpn_generator_aegean.py {config_file}") 
+    # result = run(["python", "TACPN/TACPN_generator/tacpn_generator_aegean.py",config_file],capture_output=True, text=True) 
+    # print (result.stderr)  
 
 if __name__ == "__main__":
 
@@ -43,6 +48,8 @@ if __name__ == "__main__":
     parser.add_argument('-a','--all', help='run tacpn generation ',action='store_true')
     
     args = parser.parse_args()
+    if args.grouping:
+        grouping(filename=args.filename,prefix=args.outfile)
     if args.alp:
         alp(filename=args.filename,prefix=args.outfile)
     if args.flp:

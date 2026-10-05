@@ -69,7 +69,11 @@ def alp_tcpn(initial_marking,grouping): # Runs the Aircraft-level Planning TCPN 
     # strr = result.stdout.replace("status",'"status"').replace('wps','"wps"').replace("'",'"').replace(",\n }","\n   }").replace(",\n     ]","\n     ]").replace(",\n]","\n]")
     print(result.stderr,end="")
     # print(result.stdout)
-    tcpnresult=json.loads(result.stdout)
+    try:
+        tcpnresult=json.loads(result.stdout)
+    except:
+        print(result.stdout)
+        return [],"{}"
     alts = []
     for r in tcpnresult:
         if r["status"]=="SAFE":
@@ -83,6 +87,7 @@ def map_maker (ac_token):
 if __name__=="__main__":
     import argparse
     import os
+    from tqdm import tqdm
     parser = argparse.ArgumentParser()
     parser.add_argument('-f','--filename', help='file containing initial data (e.g. test.json)',required=True)
     parser.add_argument('-g','--grouping', help='file containing decided_grouping (result of grouping.py)',required=True)
@@ -98,9 +103,12 @@ if __name__=="__main__":
         json.dump(initial_markings,open(args.outfile+"_intital_markings.json",'w'),indent=4)
     fleet_alt_tcpn_res = {}
     # Run ALP for each aircraft in the Fleet
+    fleet = list(groupings.keys())
     fleetsize = len(data["fleet"])
     for idx,plane in enumerate(data["fleet"]):
         pID = plane["aircraftID"]
+        if pID not in fleet:
+            continue
         print (f"{pID} ({idx+1}/{fleetsize}) ",end=" ")
 
         alp_res,stdout = alp_tcpn(initial_markings[pID],groupings[pID]["labeledout"])

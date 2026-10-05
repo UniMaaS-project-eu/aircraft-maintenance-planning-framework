@@ -105,7 +105,16 @@ def reset(a,s,d):
 def expire(a,s):
     a = [tuple(i) for i in a]
     s = [tuple(i) for i in s[0]]
-    return any([th_error(i,j) for i,j in zip(a,s)])
+    res = any([th_error(i,j) for i,j in zip(a,s)])
+    # if res : 
+    #     print("Boom")
+    #     for i,j in zip(a,s):
+    #         if any(x<=y for x,y in zip(j[1:],i[1:])):
+    #             print(i)
+    #             print(j)
+
+
+    return res
 
 def Duration(th,d):
     return  max([i*j for i,j in zip(th,d)])
@@ -549,17 +558,24 @@ if args.mode == "pipeline":
     if (not args.no_nx )or args.interactive_viewer:
         from pickle import dump
         dump(RG,open("vp1RG.pkl","wb"))    
-    if (args.interactive_viewer):
-        from util import interactive_viewer as IV
-        IV(RG)
+    # if (args.interactive_viewer):
+    #     from util import interactive_viewer as IV
+    #     IV(RG)
     if (args.nx_draw):
         from util import nx_draw as draw
         if args.verbose:print("visualising....")
-        draw(RG,with_t_labels=True,filename=f"RG/{file.split('/')[-1].replace('.json','')}")
+        if (args.interactive_viewer):
+            draw(RG,with_t_labels=True,with_p_labels=True)
+        else:
+            draw(RG,with_t_labels=True,filename=f"{file.split('/')[-1].replace('.json','')}")
     if (args.nx_draw_pruned):
         from util import nx_draw_pruned as draw
         if args.verbose:print("visualising....")
-        draw(RG,with_t_labels=True,filename=f"RG/{file.split('/')[-1].replace('.json','')}")
+        if (args.interactive_viewer):
+            draw(RG,with_t_labels=True)
+        
+        else:
+            draw(RG,with_t_labels=True,filename=f"{file.split('/')[-1].replace('.json','')}")
     terminals = [node for node in RG.nodes if RG.out_degree(node) == 0]
     # print("[")
     terminals_res = []

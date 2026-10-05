@@ -32,14 +32,14 @@ def tacpn_prep_v2(fleet,taskmap,T_dc=0,capacity=1,lifespan=365,):
     tasks = []
     res ["aircraft"] = []
     res ["flying_invariants"] = {
-        i:lifespan for i in fleet
+        i.replace("-","_"):int(lifespan) for i in fleet
     }
     res["crew_count"]=capacity
     res["hangar_count"]=capacity
     res["lifespan"] = lifespan+T_dc
     res["tasks"] = []
     for a in fleet:
-        res["aircraft"].append(a)
+        res["aircraft"].append(a.replace("-","_"))
         for t in fleet[a]:
             if t not in tasks:
                 tasks.append(t)
@@ -47,9 +47,12 @@ def tacpn_prep_v2(fleet,taskmap,T_dc=0,capacity=1,lifespan=365,):
         datum = {"guard":[T_dc,lifespan+T_dc],"timer_invariants":{}}
         for a in fleet:
             if t not in fleet[a]:
-                datum["timer_invariants"][a] = lifespan+T_dc
+                datum["timer_invariants"][a.replace("-","_")] = int(lifespan+T_dc)
             else:
-                datum["timer_invariants"][a] = taskmap[a][t]+T_dc
+                if taskmap[a][t] == 0:
+                    print (a,t)
+                    input()
+                datum["timer_invariants"][a.replace("-","_")] = int(taskmap[a][t]+T_dc)
         res["tasks"].append(datum)
     return res,tasks
 if __name__ == "__main__":
