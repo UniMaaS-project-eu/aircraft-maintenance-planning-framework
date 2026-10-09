@@ -117,7 +117,7 @@ def expire(a,s):
     return res
 
 def Duration(th,d):
-    return  max([i*j for i,j in zip(th,d)])
+    return  math.ceil(max([i*j for i,j in zip(th,d)]))
 """
 context = EvaluationContext(user_code=user_code)
 

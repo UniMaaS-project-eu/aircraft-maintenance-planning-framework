@@ -10,7 +10,7 @@ def alp(filename,prefix):
     grouping_file = prefix+"_grouping.json"
     if not isfile(grouping_file):
         grouping(filename,prefix)
-    system(f"python TCPN/alp.py -f {filename} -g {grouping_file} -o {prefix} -i") 
+    system(f"python TCPN/alp.py -f {filename} -g {grouping_file} -o {prefix} ") 
     # result = run(["python", "TCPN/alp.py","-f",filename,"-g",grouping_file,"-o",prefix],capture_output=True, text=True) 
     # print (result.stderr)
 def flp(filename,prefix):
@@ -41,6 +41,11 @@ def tracegen(filename,prefix):
     system(f"python TACPN/Trace_generator/trace_gen_zerotimes.py {config_file} -d {filename}") 
     # result = run(["python", "TACPN/TACPN_generator/tacpn_generator_aegean.py",config_file],capture_output=True, text=True) 
     # print (result.stderr)  
+def tacpnv2(filename,prefix):
+    config_file = prefix+"_flp_schedule.json"
+    if not isfile(config_file):
+        flp(filename,prefix)
+    system(f"python TACPN/TACPN_generator/ntua_adapter.py -s {config_file} -d {filename} -o {prefix} --verify") 
 
 
 def render_gantt(
@@ -240,12 +245,14 @@ if __name__ == "__main__":
         alp(filename=args.filename,prefix=args.outfile)
     if args.flp:
         flp(filename=args.filename,prefix=args.outfile)
-    if args.tacpngen:
-        tacpngen(filename=args.filename,prefix=args.outfile)   
-    if args.tracegen or args.all:
-        tracegen(filename=args.filename,prefix=args.outfile)
-    if args.tacpn:
-        tacpn(filename=args.filename,prefix=args.outfile)
+    # if args.tacpngen:
+    #     tacpngen(filename=args.filename,prefix=args.outfile)   
+    # if args.tracegen or args.all:
+    #     tracegen(filename=args.filename,prefix=args.outfile)
+    # if args.tacpn:
+    #     tacpn(filename=args.filename,prefix=args.outfile)
+    if args.tacpn or args.all:
+        tacpnv2(filename=args.filename,prefix=args.outfile)   
     if args.render:
         render(filename=args.filename,prefix=args.outfile)
     
