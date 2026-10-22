@@ -2,7 +2,8 @@ from os import system
 from os.path import isfile
 
 def grouping(filename,prefix):
-    system(f"python Algorithms/groupingv2.py -f {filename} -o {prefix}") 
+    print("======GROUPING==========================")
+    system(f"{time_str} python Algorithms/groupingv2.py -f {filename} -o {prefix}") 
     # result = run(["python", "Algorithms/groupingv2.py","-f",filename,"-o",prefix],capture_output=True, text=True) 
     # print (result.stderr)
 
@@ -10,45 +11,49 @@ def alp(filename,prefix):
     grouping_file = prefix+"_grouping.json"
     if not isfile(grouping_file):
         grouping(filename,prefix)
-    system(f"python TCPN/alp.py -f {filename} -g {grouping_file} -o {prefix} ") 
+    print("======TCPN==============================")
+    system(f"{time_str} python TCPN/alp.py -f {filename} -g {grouping_file} -o {prefix} ") 
     # result = run(["python", "TCPN/alp.py","-f",filename,"-g",grouping_file,"-o",prefix],capture_output=True, text=True) 
     # print (result.stderr)
 def flp(filename,prefix):
     alp_file = prefix+"_fleet_alp_res.json"
     if not isfile(alp_file):
         alp(filename,prefix)
-    system(f"python Algorithms/FLP.py -f {alp_file} -d {filename} -o {prefix}") 
+    print("======FLP===============================")
+    system(f"{time_str} python Algorithms/FLP.py -f {alp_file} -d {filename} -o {prefix} {f'-c {args.capacity}' if args.capacity else ''}") 
     # result = run(["python", "Algorithms/FLP.py","-f",alp_file,"-d",filename,"-o",prefix],capture_output=True, text=True) 
     # print (result.stderr)
-def tacpngen(filename,prefix):
-    flp_file = prefix+"_flp_schedule.json"
-    if not isfile(flp_file):
-        flp(filename,prefix)
-    system(f"python TACPN/tacpn.py -s {flp_file } -d {filename} -o {prefix}") 
-    # result = run(["python", "TACPN/tacpn.py","-s",flp_file,"-d",filename,"-o",prefix],capture_output=True, text=True) 
-    # print (result.stderr)   
-def tacpn(filename,prefix):
-    config_file = prefix+"_tacpn_config.json"
-    if not isfile(config_file):
-        tacpngen(filename,prefix)
-    system(f"python TACPN/TACPN_generator/tacpn_generator_aegean.py {config_file}") 
-    # result = run(["python", "TACPN/TACPN_generator/tacpn_generator_aegean.py",config_file],capture_output=True, text=True) 
-    # print (result.stderr)  
-def tracegen(filename,prefix):
-    config_file = prefix+"_flp_schedule.json"
-    if not isfile(config_file):
-        flp(filename,prefix)
-    system(f"python TACPN/Trace_generator/trace_gen_zerotimes.py {config_file} -d {filename}") 
-    # result = run(["python", "TACPN/TACPN_generator/tacpn_generator_aegean.py",config_file],capture_output=True, text=True) 
-    # print (result.stderr)  
+# def tacpngen(filename,prefix):
+#     flp_file = prefix+"_flp_schedule.json"
+#     if not isfile(flp_file):
+#         flp(filename,prefix)
+#     system(f"{time_str} python TACPN/tacpn.py -s {flp_file } -d {filename} -o {prefix}") 
+#     # result = run(["python", "TACPN/tacpn.py","-s",flp_file,"-d",filename,"-o",prefix],capture_output=True, text=True) 
+#     # print (result.stderr)   
+# def tacpn(filename,prefix):
+#     config_file = prefix+"_tacpn_config.json"
+#     if not isfile(config_file):
+#         tacpngen(filename,prefix)
+#     system(f"{time_str} python TACPN/TACPN_generator/tacpn_generator_aegean.py {config_file}") 
+#     # result = run(["python", "TACPN/TACPN_generator/tacpn_generator_aegean.py",config_file],capture_output=True, text=True) 
+#     # print (result.stderr)  
+# def tracegen(filename,prefix):
+#     config_file = prefix+"_flp_schedule.json"
+#     if not isfile(config_file):
+#         flp(filename,prefix)
+#     system(f"{time_str} python TACPN/Trace_generator/trace_gen_zerotimes.py {config_file} -d {filename}") 
+#     # result = run(["python", "TACPN/TACPN_generator/tacpn_generator_aegean.py",config_file],capture_output=True, text=True) 
+#     # print (result.stderr)  
 def tacpnv2(filename,prefix):
     config_file = prefix+"_flp_schedule.json"
     if not isfile(config_file):
         flp(filename,prefix)
-    system(f"python TACPN/TACPN_generator/ntua_adapter.py -s {config_file} -d {filename} -o {prefix} --verify") 
+    print("======TACPN==========================")
+    system(f"{time_str} python TACPN/TACPN_generator/ntua_adapter.py -s {config_file} -d {filename} -o {prefix} --tapn --verify") 
 
 
 def render_gantt(
+    
     schedule_data,
     title: str = "Schedule",
     height_per_aircraft: int = 55,
@@ -236,9 +241,15 @@ if __name__ == "__main__":
     parser.add_argument('--tacpn', help='run tacpn generation ',action='store_true')
     parser.add_argument('--tracegen', help='run tacpn trace generation ',action='store_true')
     parser.add_argument('--render', help='render flp output using plottly',action='store_true')
+    parser.add_argument('--time', help='run time on every step',action='store_true')
     parser.add_argument('-a','--all', help='run whole pipeline ',action='store_true')
+    parser.add_argument('-c','--capacity', help='override capacity in flp ',type=int)
     
+    
+
     args = parser.parse_args()
+    time_str="time" if args.time else "" 
+
     if args.grouping:
         grouping(filename=args.filename,prefix=args.outfile)
     if args.alp:

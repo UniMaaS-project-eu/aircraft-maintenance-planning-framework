@@ -136,6 +136,7 @@ def _solve(schedule,start,capacity):
     for d in range(start,schedule.last_day()):
         day = schedule.day(d)
         if len(day)>capacity:
+            print(f"conflict")
             c_start = conflict(day,capacity)
             return(_solve(schedule,c_start,capacity))
     return schedule
