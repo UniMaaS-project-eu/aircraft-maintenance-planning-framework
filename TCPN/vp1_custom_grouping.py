@@ -42,8 +42,49 @@ import math
 import json
 grouping = json.load(open('curr_grouping.json','r'))
 
+def eucl_dist (x,y):
+    return (sum((p1 - p2) ** 2 for p1, p2 in zip(x, y)))**(1/2)
 
 def grouping2vec(a,s):
+    grouping = json.load(open('curr_grouping.json','r'))
+    th1_vec=TH1(a,s)
+    if any(TH1(a,s)):
+        dom = a[th1_vec.index(True)][0]
+        if dom not in grouping:
+            P = [grouping[i] for i in grouping]
+            keys = [i for i in grouping]
+
+            p1 = dom in P[0]
+            p2 = dom in P[1]
+            if p1 ^ p2 :
+                if p1:
+                    dom = keys[0] 
+                else :
+                    dom = keys[1]
+            else:
+                vec1 = [1 if i[0] in P[0] else 0 for i in a]
+                vec2 = [1 if i[0] in P[1] else 0 for i in a]
+                vec_cur = [(i[1]/j[1] + i[2]/j[2] + i[3]/j[3]) /3 for i,j in zip(a,s)]
+                d1 = eucl_dist (vec1,vec_cur)
+                d2 = eucl_dist (vec2,vec_cur)
+                if d1 < d2:
+                    dom = keys[0]
+                if d2 < d1:
+                    dom = keys[1]
+                if d2 == d1:
+                    print ("Unable to select Grouping. Defaults to second")
+                    dom = keys[1]
+
+
+    else:
+        dom = 2
+    res = []
+    for i in a:
+        if dom != 2 and i[0] in grouping[dom]: res.append(True)
+        else:res.append(False)
+    return res
+    
+def old_grouping2vec(a,s):
     grouping = json.load(open('curr_grouping.json','r'))
     th1_vec=TH1(a,s)
     if any(TH1(a,s)):
@@ -55,6 +96,7 @@ def grouping2vec(a,s):
         if dom != 2 and i[0] in grouping[dom]: res.append(True)
         else:res.append(False)
     return res
+
 def th1(a,s):
     return any(i>=(j) for i,j in zip(a[1:],s[1:]))
 def th2(a,s):
@@ -68,14 +110,23 @@ def next_grouping(a,s,gr):
         if i[0] in gr:
             deadline.append(min([(y-x) for x,y in zip(i[1:],j[1:])]))
             labels.append(i[0])
+        
     deadline_sorted, labels_sorted = zip(*sorted(zip(deadline, labels)))
     return labels_sorted[0]
-def TH1(a,s):
+def old_TH1(a,s):
     grouping = json.load(open('curr_grouping.json','r'))
     next = next_grouping(a,s,grouping)
     # res = [th1(i,j) if (i[0] == next) else False for i,j in zip(a,s) ]
     # if any(res): print(res)
     return [th1(i,j) if (i[0] == next) else False for i,j in zip(a,s) ]
+
+def TH1(a,s):
+   grouping = json.load(open('curr_grouping.json','r'))
+   # next = next_grouping(a,s,grouping)
+   # res = [th1(i,j) if (i[0] == next) else False for i,j in zip(a,s) ]
+   # if any(res): print(res)
+   return [th1(i,j) for i,j in zip(a,s) ]
+
 def TH2(a,s):
     return grouping2vec(a,s)
 
