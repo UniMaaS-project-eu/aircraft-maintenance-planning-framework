@@ -1,14 +1,16 @@
 class task:
     def __init__(self,name,s,d,mapping):
         self.id = name
-        self.s = int(s)
-        self.d = int(d) 
-        self.i = int(s) 
+        self.s = int(s) #nominal
+        self.d = int(d) #duration
+        self.i = int(s) #current
         self.map = mapping
     def schedule(self,i):
         self.i = i 
     def delay(self,x):
         self.i += x
+    def ID(self):
+        return(self.id.split(":")[0])
     def __repr__(self):
         return f"{self.id}"
 
@@ -116,39 +118,65 @@ class schedule:
                 print(" ...")
                 flag = False
 
-def conflict(l,capacity):
+def conflict(l,capacity,schedule,withsiblings):
     import itertools
-
+    # print(l,capacity,withsiblings)
     combinations = list(itertools.combinations(l, len(l)-capacity))
     actions = {}
+    # print("comb",combinations)
+    siblings = {}
+
     for comb in combinations:
+        
         n = l.copy()
+        for x in comb:
+            if x.ID() in withsiblings:
+                for p in schedule.tasks:
+                    if x.ID() == p.ID() and x.s > p.s:
+                        siblings[x]=p
+                    # else:
+                    #     if "4" in x.ID():
+                    #         print(f"|{x.ID()}|")
+                    #         print(f"|{p.ID()}|")
+                    #         print(x.s)
+                    #         print(p.s)
+
         for x in comb:
             n.remove(x)
         lasttoend = min(n, key=lambda p: p.i+p.d)
         actions[comb] = [abs(lasttoend.i+lasttoend.d - x.i)for x in comb]
     tomove = min(actions, key=lambda x:sum(actions[x])+sum(i.i-i.s for i in x))
+    print("tomove",tuple(i.ID() for i in tomove))
+    # print(siblings)
+    sibling_first = 999999999
     for x,y in zip(tomove,actions[tomove]):
         x.delay(y)
-    return min(l, key=lambda p: p.i).i
+        if x in siblings:
+            p = siblings[x]
+            print(" alsomove",p.ID())
+            if p.i <= sibling_first:
+                sibling_first = p.i 
+            p.delay(y)
+    inconflictfirst = min(l, key=lambda p: p.i).i 
+    return  min(sibling_first,inconflictfirst)
     
-def _solve(schedule,start,capacity):
+def _solve(schedule,start,capacity,withsiblings):
     for d in range(start,schedule.last_day()):
         day = schedule.day(d)
         if len(day)>capacity:
-            print(f"conflict")
-            c_start = conflict(day,capacity)
-            return(_solve(schedule,c_start,capacity))
+            print(f"\nconflict")
+            c_start = conflict(day,capacity,schedule,withsiblings)
+            return(_solve(schedule,c_start,capacity,withsiblings))
     return schedule
-def solve(sched,capacity):
+def solve(sched,capacity,withsiblings):
     sched.trunc()
     sched.flip_time()
-    _solve(sched,0,capacity)
+    _solve(sched,0,capacity,withsiblings)
     sched.flip_time()
     sched.restore()
     sched.apply_delays()
 
-def flp_algo(alts,cap,bo_days): # Flight-level Planning Algorithm
+def flp_algo(alts,cap,bo_days,withsiblings): # Flight-level Planning Algorithm
     tasks_list = []
 
     for plane in alts:
@@ -176,7 +204,7 @@ def flp_algo(alts,cap,bo_days): # Flight-level Planning Algorithm
 
     # if printv():schd.print()
 
-    solve(schd,cap)
+    solve(schd,cap,withsiblings)
 
     # schd.print(bohash=True)
     return schd
@@ -220,6 +248,8 @@ def tracegen_prepv2(sched): # Prepares input for the TACPN trace generation ( Ag
     #     input_json.append(alt)
     # return input_json   
         return alt
+
+
 if __name__ == "__main__":
     import json
     import argparse
@@ -228,7 +258,7 @@ if __name__ == "__main__":
     parser.add_argument('-d','--data', help='file containing initial data (e.g. test.json): used ONLY for hangar capacity and blackout days')
     parser.add_argument('-c','--capacity', help='capacity : overrides value set in data file if provided',type=int)
     parser.add_argument('-b','--blackout_days', help='blackout-days provided either as list (e.g. [1,23,24, 35]) or data-duration pairs (e.g. {"1":1, "23":2, "35":1})')
-
+    parser.add_argument('-s', '--siblings', help='file containing tasks to be reoptimised with their sibling, based on TACPN output')
     parser.add_argument('-o','--outfile', help='prefix for output file (defaults to \'out\')',default="out")
     args = parser.parse_args()
     bo_days = {}
@@ -247,5 +277,10 @@ if __name__ == "__main__":
             bo_days = {int(i):j for i,j in bos.items()}
     if args.capacity :
         capacity = args.capacity
+    withsiblings = []
+    if args.siblings:
+        withsiblings = open(args.siblings,'r').read().splitlines()
+        print(withsiblings)
+    
     alts = json.load(open(args.filename,'r'))
-    json.dump(tracegen_prepv2(flp_algo(alts,capacity,bo_days)),open(args.outfile+"_flp_schedule.json",'w'),indent=4)
+    json.dump(tracegen_prepv2(flp_algo(alts,capacity,bo_days,withsiblings)),open(args.outfile+"_flp_schedule.json",'w'),indent=4)

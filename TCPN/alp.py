@@ -1,5 +1,6 @@
 import json
-
+from os.path import isfile,abspath,dirname
+WD = dirname(abspath(__file__))
 def tokenise(ac,tasks,fcpd=1,fhpd=1,years=1,year_dur=365,p=2,bop=[],bot=[]): # Create TCPN compatible tokens from input variables
     # ac := "Plane ID",tasks := "Tasks object",fcpd := "Flight Cycles / day",fhpd := "Flight Hours / day",years := "Number of seasons ",year_dur := "season duration",p := "Number of projects / season",bot := "black-out days (dates)",bop := black-out days (duration)
 
@@ -64,7 +65,7 @@ def alp_tcpn(initial_marking,grouping): # Runs the Aircraft-level Planning TCPN 
     json.dump(initial_marking,open(f"dataset_initial_marking.json",'w'))
     json.dump(grouping,open(f"curr_grouping.json",'w'))
 
-    result = subprocess.run(["python", "TCPN/vp1_custom_grouping.py","pipeline","-ijx"],capture_output=True, text=True) 
+    result = subprocess.run(["python", f"{WD}/vp1_custom_grouping.py","pipeline","-ijx"],capture_output=True, text=True) 
         
     # strr = result.stdout.replace("status",'"status"').replace('wps','"wps"').replace("'",'"').replace(",\n }","\n   }").replace(",\n     ]","\n     ]").replace(",\n]","\n]")
     print(result.stderr,end="")

@@ -1,9 +1,9 @@
 from os import system 
-from os.path import isfile
-
+from os.path import isfile,abspath,dirname
+WD = dirname(abspath(__file__))
 def grouping(filename,prefix):
     print("======GROUPING==========================")
-    system(f"{time_str} python Algorithms/groupingv2.py -f {filename} -o {prefix}") 
+    system(f"{time_str} python {WD}/Algorithms/groupingv2.py -f {filename} -o {prefix}") 
     # result = run(["python", "Algorithms/groupingv2.py","-f",filename,"-o",prefix],capture_output=True, text=True) 
     # print (result.stderr)
 
@@ -12,15 +12,19 @@ def alp(filename,prefix):
     if not isfile(grouping_file):
         grouping(filename,prefix)
     print("======TCPN==============================")
-    system(f"{time_str} python TCPN/alp.py -f {filename} -g {grouping_file} -o {prefix} ") 
+    system(f"{time_str} python {WD}/TCPN/alp.py -f {filename} -g {grouping_file} -o {prefix} ") 
     # result = run(["python", "TCPN/alp.py","-f",filename,"-g",grouping_file,"-o",prefix],capture_output=True, text=True) 
     # print (result.stderr)
-def flp(filename,prefix):
+def flp(filename,prefix,withsiblings=False):
     alp_file = prefix+"_fleet_alp_res.json"
     if not isfile(alp_file):
         alp(filename,prefix)
     print("======FLP===============================")
-    system(f"{time_str} python Algorithms/FLP.py -f {alp_file} -d {filename} -o {prefix} {f'-c {args.capacity}' if args.capacity else ''}") 
+
+    if withsiblings:
+        system(f"{time_str} python {WD}/Algorithms/FLP.py -f {alp_file} -d {filename} -o {prefix} {f'-c {args.capacity}' if args.capacity else ''} -s {prefix}_wsiblings.txt") 
+    else:
+        system(f"{time_str} python {WD}/Algorithms/FLP.py -f {alp_file} -d {filename} -o {prefix} {f'-c {args.capacity}' if args.capacity else ''}") 
     # result = run(["python", "Algorithms/FLP.py","-f",alp_file,"-d",filename,"-o",prefix],capture_output=True, text=True) 
     # print (result.stderr)
 # def tacpngen(filename,prefix):
@@ -49,9 +53,29 @@ def tacpnv2(filename,prefix):
     if not isfile(config_file):
         flp(filename,prefix)
     print("======TACPN==========================")
-    system(f"{time_str} python TACPN/TACPN_generator/ntua_adapter.py -s {config_file} -d {filename} -o {prefix} --tapn --verify") 
+    system(f"{time_str} python {WD}/TACPN/TACPN_generator/ntua_adapter.py -s {config_file} -d {filename} -o {prefix} --tapn --verify") 
 
 
+def reoptimise(filename,prefix,max_depth=10,_depth=0):
+    import json
+    report_file = prefix+"_tacpn_report.json"
+    if not isfile(report_file):
+        tacpnv2(filename,prefix)
+    report = json.load(open(report_file,'r'))
+    if report["verdict"] == "infeasible" and report["violation"]["type"] == 'due_date':
+        print("======Reoptimisation==========================")
+        
+        problematic = report["violation"]["aircraft"]
+        siblings_file = prefix+"_wsiblings.txt"
+        if not isfile(siblings_file) or problematic not in open(siblings_file,'r').read().splitlines():
+            open(siblings_file,'a').write("\n"+problematic)
+        print(problematic)
+        flp(filename,prefix,True)
+        tacpnv2(filename,prefix)
+        if _depth<=max_depth:
+            reoptimise(filename,prefix,_depth=_depth+1)
+        else:
+            print("max_depth")
 def render_gantt(
     
     schedule_data,
@@ -240,16 +264,19 @@ if __name__ == "__main__":
     parser.add_argument('--tacpngen', help='run tacpn config generation ',action='store_true')
     parser.add_argument('--tacpn', help='run tacpn generation ',action='store_true')
     parser.add_argument('--tracegen', help='run tacpn trace generation ',action='store_true')
+    parser.add_argument('--reoptimise', help='run tacpn verification guided reoptimisation',action='store_true')    
     parser.add_argument('--render', help='render flp output using plottly',action='store_true')
     parser.add_argument('--time', help='run time on every step',action='store_true')
     parser.add_argument('-a','--all', help='run whole pipeline ',action='store_true')
     parser.add_argument('-c','--capacity', help='override capacity in flp ',type=int)
+    parser.add_argument('--dry_run', help='override capacity in flp ',action='store_true')
     
-    
+
 
     args = parser.parse_args()
     time_str="time" if args.time else "" 
-
+    if args.dry_run:
+        system=print
     if args.grouping:
         grouping(filename=args.filename,prefix=args.outfile)
     if args.alp:
@@ -262,7 +289,9 @@ if __name__ == "__main__":
     #     tracegen(filename=args.filename,prefix=args.outfile)
     # if args.tacpn:
     #     tacpn(filename=args.filename,prefix=args.outfile)
-    if args.tacpn or args.all:
+    if args.reoptimise or args.all:
+        reoptimise(filename=args.filename,prefix=args.outfile)
+    if args.tacpn :
         tacpnv2(filename=args.filename,prefix=args.outfile)   
     if args.render:
         render(filename=args.filename,prefix=args.outfile)

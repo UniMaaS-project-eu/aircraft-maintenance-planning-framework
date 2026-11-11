@@ -199,14 +199,25 @@ def split(l,horison):
     l2_tonos = l2.copy()
     l3_tonos = l3.copy()
     #~print("min cost =",min_cost)
+    toskip=[]
     for idx,t in enumerate(l1[::-1]):
         #~print(f"task : {t}")
+        #replace:
+        # if any(i[0]==t[0] for i in l2):
+            #~print(f" task {t[0]} found in l2. Abort")
+        #     toskip.append(i)
+        #     continue # TODO replace with continue and skip element ?
+        # l1_prop = l1[:-idx-1] + toskip
+        # l2_prop = l2+[x for x in l1[-idx-1:] if x not in toskip]
+        # l3_prop = l3.copy()
+        #replace
         if any(i[0]==t[0] for i in l2):
             #~print(f" task {t[0]} found in l2. Abort")
             break # TODO replace with continue and skip element ?
         l1_prop = l1[:-idx-1]
         l2_prop = l2+l1[-idx-1:]
         l3_prop = l3.copy()
+        #end
         # fix l3
         l2buff = []
         for t in l3_prop:
@@ -263,7 +274,16 @@ def algorithmv2(tasks,horison):
     if len(l2) !=0:
         l2_def = min(l2,key=lambda x : x[1])
         split_dates = [l1_def[1],l2_def[1]]
-        labeledout = {l1_def[0]:[i[0] for i in l1],l2_def[0]:[i[0] for i in l2]}
+        p1 = [i[0] for i in l1]
+        p2 = [i[0] for i in l2]
+        if l1_def[0] == l2_def[0]:
+            if set(p1) == set(p2):
+                labeledout = {l1_def[0]:p1}
+            else:
+                labeledout = {l1_def[0]+"(1)":p1,l2_def[0]+"(2)":p2}
+        
+        else:
+            labeledout = {l1_def[0]:p1,l2_def[0]:p2}
     else:
         split_dates = [l1_def[1]]
         labeledout = {l1_def[0]:[i[0] for i in l1]}
